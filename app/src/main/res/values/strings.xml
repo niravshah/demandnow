@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">DemandNow</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="app_name">Get Done Now</string>
     <string name="action_settings">Settings</string>
     <string name="nav_item_attachment">Attachment</string>
     <string name="nav_item_images">Images</string>

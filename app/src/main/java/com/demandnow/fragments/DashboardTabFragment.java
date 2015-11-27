@@ -1,16 +1,12 @@
 package com.demandnow.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.demandnow.NewJobDetailsActivity;
 import com.demandnow.R;
 import com.demandnow.SharedPrefrences;
 import com.google.android.gms.maps.CameraUpdate;
@@ -24,7 +20,7 @@ import com.google.android.gms.maps.model.LatLng;
  */
 public class DashboardTabFragment extends Fragment {
 
-    public static final String TAB_NAME = "New Request";
+    public static final String TAB_NAME = "Dashboard";
 
     MapView mapView;
     private GoogleMap map;
@@ -41,7 +37,7 @@ public class DashboardTabFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.new_job_req_layout, container, false);
+        View v = inflater.inflate(R.layout.fragment_dashboard_layout, container, false);
         // Gets the MapView from the XML layout and creates it
         mapView = (MapView) v.findViewById(R.id.mapview);
         mapView.onCreate(savedInstanceState);
@@ -55,16 +51,6 @@ public class DashboardTabFragment extends Fragment {
             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(SharedPrefrences.getLastLocation().getLatitude(), SharedPrefrences.getLastLocation().getLongitude()), 10);
             map.animateCamera(cameraUpdate);
         }
-
-        final FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.fab);
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i("DashboardTabFragment", "onclick fab");
-                startActivity(new Intent(getContext(), NewJobDetailsActivity.class));
-            }
-        });
 
         return v;
     }

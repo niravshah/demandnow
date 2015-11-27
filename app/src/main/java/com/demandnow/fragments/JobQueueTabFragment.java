@@ -5,11 +5,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.demandnow.R;
 import com.demandnow.adapters.JobQueueRecyclerAdapter;
@@ -46,7 +44,7 @@ public class JobQueueTabFragment extends Fragment {
             items.add("Tab #" + tabPosition + " item #" + i);
         }
 
-        View v =  inflater.inflate(R.layout.job_queue_list_view, container, false);
+        View v =  inflater.inflate(R.layout.fragment_job_queue_list_view, container, false);
         RecyclerView recyclerView = (RecyclerView)v.findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(new JobQueueRecyclerAdapter(items));

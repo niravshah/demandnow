@@ -1,28 +1,13 @@
 package com.demandnow;
 
-import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageRequest;
 import com.demandnow.adapters.MainTabsPagerAdapter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -31,13 +16,11 @@ import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
-public class MainActivity extends AppCompatActivity implements
+public class MainActivity extends GDNBaseActivity implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
 
-    private DrawerLayout mDrawerLayout;
+
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
 
@@ -47,13 +30,10 @@ public class MainActivity extends AppCompatActivity implements
 
         super.onCreate(savedInstanceState);
         Toast.makeText(MainActivity.this, "Logged In: " + SharedPrefrences.getAcctName(), Toast.LENGTH_LONG).show();
-
         setContentView(R.layout.activity_main);
-
         renderToolbarActionbar();
         renderNavigationDrawer();
         buildGoogleApiClient();
-
         MainTabsPagerAdapter adapter = new MainTabsPagerAdapter(getSupportFragmentManager());
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(adapter);
@@ -62,50 +42,6 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
-    private void renderToolbarActionbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        ActionBar actionBar = getSupportActionBar();
-
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_reorder_white_18dp);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-    }
-
-    private void renderNavigationDrawer() {
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
-                menuItem.setChecked(true);
-                mDrawerLayout.closeDrawers();
-                Toast.makeText(MainActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
-                return true;
-            }
-        });
-
-        View drawerHeader = LayoutInflater.from(this).inflate(R.layout.drawer_header, navigationView);
-        final TextView userName = (TextView) drawerHeader.findViewById(R.id.user_name_tv);
-        userName.setText(SharedPrefrences.getAcctName());
-        final CircleImageView imageView = (CircleImageView) drawerHeader.findViewById(R.id.profile_image);
-
-        ImageRequest request = new ImageRequest(SharedPrefrences.getPhotUrl(),
-                new Response.Listener<Bitmap>() {
-                    @Override
-                    public void onResponse(Bitmap bitmap) {
-                        imageView.setImageBitmap(bitmap);
-                    }
-                }, 0, 0, null,
-                new Response.ErrorListener() {
-                    public void onErrorResponse(VolleyError error) {
-                        imageView.setImageResource(R.drawable.profile);
-                    }
-                });
-
-        VolleySingleton.getInstance(this).addToRequestQueue(request);
-    }
 
     @Override
     protected void onStart() {
@@ -139,11 +75,6 @@ public class MainActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
 
     @Override
     public void onConnected(Bundle connectionHint) {

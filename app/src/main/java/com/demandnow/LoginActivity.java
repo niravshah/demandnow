@@ -1,6 +1,7 @@
 package com.demandnow;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -10,13 +11,13 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.credentials.Credential;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
@@ -28,11 +29,23 @@ import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
 
-    private GoogleApiClient mGoogleApiClient;
-    private static final int RC_SIGN_IN = 9001;
+
     private String TAG = "LoginActivity";
+
+    private static final String KEY_IS_RESOLVING = "is_resolving";
+    private static final String KEY_CREDENTIAL = "key_credential";
+    private static final String KEY_CREDENTIAL_TO_SAVE = "key_credential_to_save";
+
+    private static final int RC_SIGN_IN = 1;
+    private static final int RC_CREDENTIALS_READ = 2;
+    private static final int RC_CREDENTIALS_SAVE = 3;
     private static final int MY_PERMISSIONS_ACCESS_FINE_LOCATION = 10;
 
+    private GoogleApiClient mGoogleApiClient;
+    private ProgressDialog mProgressDialog;
+    private boolean mIsResolving = false;
+    private Credential mCredential;
+    private Credential mCredentialToSave;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

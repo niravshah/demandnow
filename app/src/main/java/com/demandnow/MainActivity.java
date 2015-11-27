@@ -60,9 +60,6 @@ public class MainActivity extends AppCompatActivity implements
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tablayout);
         tabLayout.setupWithViewPager(viewPager);
 
-
-
-
     }
 
     private void renderToolbarActionbar() {
@@ -70,7 +67,8 @@ public class MainActivity extends AppCompatActivity implements
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setHomeAsUpIndicator(R.mipmap.ic_launcher);
+
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_reorder_white_18dp);
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
 

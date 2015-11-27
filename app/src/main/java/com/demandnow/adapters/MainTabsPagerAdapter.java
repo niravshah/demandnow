@@ -4,10 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.demandnow.R;
+import com.demandnow.fragments.DashboardTabFragment;
 import com.demandnow.fragments.JobQueueTabFragment;
-import com.demandnow.fragments.NewRequestTabFragment;
-import com.google.android.gms.maps.SupportMapFragment;
 
 /**
  * Created by Nirav on 20/11/2015.
@@ -24,8 +22,7 @@ public class MainTabsPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                NewRequestTabFragment tab = NewRequestTabFragment.newInstance(position);
-                return tab;
+                return DashboardTabFragment.newInstance(position);
             case 1:
                 return JobQueueTabFragment.newInstance(position);
             default:
@@ -43,7 +40,7 @@ public class MainTabsPagerAdapter extends FragmentStatePagerAdapter {
 
         switch (position) {
             case 0:
-                return NewRequestTabFragment.TAB_NAME;
+                return DashboardTabFragment.TAB_NAME;
             case 1:
                 return JobQueueTabFragment.TAB_NAME;
             default:

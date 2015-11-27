@@ -7,9 +7,11 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -30,6 +32,7 @@ public abstract class GDNBaseActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeAsUpIndicator(R.drawable.ic_reorder_white_18dp);
         actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle(SharedPrefrences.getCurrentService());
     }
 
     protected void renderNavigationDrawer() {
@@ -40,7 +43,7 @@ public abstract class GDNBaseActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 menuItem.setChecked(true);
                 mDrawerLayout.closeDrawers();
-                //Toast.makeText(MainActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), menuItem.getTitle(), Toast.LENGTH_LONG).show();
                 return true;
             }
         });
@@ -64,6 +67,12 @@ public abstract class GDNBaseActivity extends AppCompatActivity {
                 });
 
         VolleySingleton.getInstance(this).addToRequestQueue(request);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.app_bar_menu, menu);
+        return true;
     }
 
 }

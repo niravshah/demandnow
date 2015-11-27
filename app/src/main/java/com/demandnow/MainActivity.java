@@ -1,5 +1,6 @@
 package com.demandnow;
 
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -70,6 +71,9 @@ public class MainActivity extends GDNBaseActivity implements
                 return true;
             case R.id.action_settings:
                 return true;
+            case R.id.action_service_selector:
+                startActivity(new Intent(getApplicationContext(),ServiceSelectorActivity.class));
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -99,6 +103,7 @@ public class MainActivity extends GDNBaseActivity implements
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
     }
+
 
 }
 

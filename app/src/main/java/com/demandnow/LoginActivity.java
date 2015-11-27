@@ -217,6 +217,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             SharedPrefrences.setAcctName(gsa.getDisplayName());
             SharedPrefrences.setPhotUrl(gsa.getPhotoUrl().toString());
             SharedPrefrences.setAcctEmail(gsa.getEmail());
+            SharedPrefrences.setCurrentService("Takeaway Delivery");
             if (ContextCompat.checkSelfPermission(LoginActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(LoginActivity.this,

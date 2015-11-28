@@ -44,7 +44,7 @@ public class JobQueueTabFragment extends Fragment {
             items.add("Tab #" + tabPosition + " item #" + i);
         }
 
-        View v =  inflater.inflate(R.layout.fragment_job_queue_list_view, container, false);
+        View v =  inflater.inflate(R.layout.rv_job_queue, container, false);
         RecyclerView recyclerView = (RecyclerView)v.findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(new JobQueueRecyclerAdapter(items));

@@ -72,7 +72,7 @@ public class MainActivity extends GDNBaseActivity implements
             case R.id.action_settings:
                 return true;
             case R.id.action_service_selector:
-                startActivity(new Intent(getApplicationContext(),ServiceSelectorActivity.class));
+                startActivity(new Intent(this,ServiceSelectorActivity.class));
 
         }
 

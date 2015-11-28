@@ -15,6 +15,7 @@ import java.util.List;
  */
 public class ServiceSelectorActivity extends GDNBaseActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
@@ -40,8 +41,6 @@ public class MainActivity extends GDNBaseActivity implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
 
-    private static final String TAG = "GDN - MainActivity";
-    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
@@ -55,12 +54,30 @@ public class MainActivity extends GDNBaseActivity implements
         setContentView(R.layout.activity_main);
         renderToolbarActionbar();
         renderNavigationDrawer();
+        initializeBroadcastReciever();
         buildGoogleApiClient();
         MainTabsPagerAdapter adapter = new MainTabsPagerAdapter(getSupportFragmentManager());
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(adapter);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tablayout);
         tabLayout.setupWithViewPager(viewPager);
+    }
+
+    private void initializeBroadcastReciever() {
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                SharedPreferences sharedPreferences =
+                        PreferenceManager.getDefaultSharedPreferences(context);
+                boolean sentToken = sharedPreferences
+                        .getBoolean(GDNSharedPrefrences.SENT_TOKEN_TO_SERVER, false);
+                if(sentToken){
+                    Toast.makeText(MainActivity.this, "GCM Token Sent", Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(MainActivity.this, "GCM Token Error", Toast.LENGTH_LONG).show();
+                }
+            }
+        };
     }
 
     @Override
@@ -123,65 +140,52 @@ public class MainActivity extends GDNBaseActivity implements
             if (GDNSharedPrefrences.getMap() != null) {
                 CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()), 15);
                 GDNSharedPrefrences.getMap().animateCamera(cameraUpdate);
-                String url = "http://morph-stadium.codio.io:3000/nearby/"
-                        + GDNSharedPrefrences.getLastLocation().getLatitude()
-                        + "/"
-                        + GDNSharedPrefrences.getLastLocation().getLongitude();
-                JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                        (Request.Method.GET, url, new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                Log.i("LOGIN", response.toString());
-                                Iterator<String> keys = response.keys();
-                                while (keys.hasNext()) {
-                                    try {
-                                        String ninja = keys.next();
-                                        JSONObject o = (JSONObject) response.get(ninja);
-
-                                        GDNSharedPrefrences.getMap().addMarker(new MarkerOptions()
-                                                .position(new LatLng(Double.parseDouble((String) o.get("latitude")),
-                                                        Double.parseDouble((String) o.get("longitude"))))
-                                                .title(ninja)
-                                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_takeaway_icon)));
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-
-                                }
-
-                            }
-                        }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                error.printStackTrace();
-                                Log.e("VolleyErorr", error.getLocalizedMessage() + error.getMessage());
-                            }
-                        });
-
+                JsonObjectRequest jsObjRequest = getJsonObjectRequest();
                 GDNVolleySingleton.getInstance(this).addToRequestQueue(jsObjRequest);
-
                 //GCM Registration once Google Services are available
-                mRegistrationBroadcastReceiver = new BroadcastReceiver() {
-                    @Override
-                    public void onReceive(Context context, Intent intent) {
-                        SharedPreferences sharedPreferences =
-                                PreferenceManager.getDefaultSharedPreferences(context);
-                        boolean sentToken = sharedPreferences
-                                .getBoolean(GDNSharedPrefrences.SENT_TOKEN_TO_SERVER, false);
-                        if(sentToken){
-                            Toast.makeText(MainActivity.this, "GCM Token Sent", Toast.LENGTH_LONG).show();
-                        }else{
-                            Toast.makeText(MainActivity.this, "GCM Token Error", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                };
-
                 Intent intent = new Intent(this, RegistrationIntentService.class);
                 startService(intent);
-
             }
         }
+    }
+
+    @NonNull
+    private JsonObjectRequest getJsonObjectRequest() {
+        String url = "http://morph-stadium.codio.io:3000/nearby/"
+                + GDNSharedPrefrences.getLastLocation().getLatitude()
+                + "/"
+                + GDNSharedPrefrences.getLastLocation().getLongitude();
+        return new JsonObjectRequest
+                (Request.Method.GET, url, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.i("LOGIN", response.toString());
+                        Iterator<String> keys = response.keys();
+                        while (keys.hasNext()) {
+                            try {
+                                String ninja = keys.next();
+                                JSONObject o = (JSONObject) response.get(ninja);
+
+                                GDNSharedPrefrences.getMap().addMarker(new MarkerOptions()
+                                        .position(new LatLng(Double.parseDouble((String) o.get("latitude")),
+                                                Double.parseDouble((String) o.get("longitude"))))
+                                        .title(ninja)
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_takeaway_icon)));
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                        Log.e("VolleyErorr", error.getLocalizedMessage() + error.getMessage());
+                    }
+                });
     }
 
     @Override

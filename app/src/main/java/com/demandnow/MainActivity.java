@@ -1,9 +1,15 @@
 package com.demandnow;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -15,6 +21,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.demandnow.adapters.MainTabsPagerAdapter;
+import com.demandnow.services.RegistrationIntentService;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -33,16 +40,18 @@ public class MainActivity extends GDNBaseActivity implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
 
-
+    private static final String TAG = "GDN - MainActivity";
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        Toast.makeText(MainActivity.this, "Logged In: " + SharedPrefrences.getAcctName(), Toast.LENGTH_LONG).show();
+        Toast.makeText(MainActivity.this, "Logged In: " + GDNSharedPrefrences.getAcctName(), Toast.LENGTH_LONG).show();
         setContentView(R.layout.activity_main);
         renderToolbarActionbar();
         renderNavigationDrawer();
@@ -52,15 +61,27 @@ public class MainActivity extends GDNBaseActivity implements
         viewPager.setAdapter(adapter);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tablayout);
         tabLayout.setupWithViewPager(viewPager);
-
     }
-
 
     @Override
     protected void onStart() {
         super.onStart();
         mGoogleApiClient.connect();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(GDNSharedPrefrences.REGISTRATION_COMPLETE));
+    }
+
+    @Override
+    protected void onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
+        super.onPause();
+    }
+
 
     protected synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -97,15 +118,15 @@ public class MainActivity extends GDNBaseActivity implements
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                 mGoogleApiClient);
         if (mLastLocation != null) {
-            SharedPrefrences.setLastLocation(mLastLocation);
+            GDNSharedPrefrences.setLastLocation(mLastLocation);
             Toast.makeText(MainActivity.this, "Location Updated", Toast.LENGTH_LONG).show();
-            if (SharedPrefrences.getMap() != null) {
+            if (GDNSharedPrefrences.getMap() != null) {
                 CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()), 15);
-                SharedPrefrences.getMap().animateCamera(cameraUpdate);
+                GDNSharedPrefrences.getMap().animateCamera(cameraUpdate);
                 String url = "http://morph-stadium.codio.io:3000/nearby/"
-                        + SharedPrefrences.getLastLocation().getLatitude()
+                        + GDNSharedPrefrences.getLastLocation().getLatitude()
                         + "/"
-                        + SharedPrefrences.getLastLocation().getLongitude();
+                        + GDNSharedPrefrences.getLastLocation().getLongitude();
                 JsonObjectRequest jsObjRequest = new JsonObjectRequest
                         (Request.Method.GET, url, new Response.Listener<JSONObject>() {
                             @Override
@@ -117,7 +138,7 @@ public class MainActivity extends GDNBaseActivity implements
                                         String ninja = keys.next();
                                         JSONObject o = (JSONObject) response.get(ninja);
 
-                                        SharedPrefrences.getMap().addMarker(new MarkerOptions()
+                                        GDNSharedPrefrences.getMap().addMarker(new MarkerOptions()
                                                 .position(new LatLng(Double.parseDouble((String) o.get("latitude")),
                                                         Double.parseDouble((String) o.get("longitude"))))
                                                 .title(ninja)
@@ -138,7 +159,27 @@ public class MainActivity extends GDNBaseActivity implements
                             }
                         });
 
-                VolleySingleton.getInstance(this).addToRequestQueue(jsObjRequest);
+                GDNVolleySingleton.getInstance(this).addToRequestQueue(jsObjRequest);
+
+                //GCM Registration once Google Services are available
+                mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+                    @Override
+                    public void onReceive(Context context, Intent intent) {
+                        SharedPreferences sharedPreferences =
+                                PreferenceManager.getDefaultSharedPreferences(context);
+                        boolean sentToken = sharedPreferences
+                                .getBoolean(GDNSharedPrefrences.SENT_TOKEN_TO_SERVER, false);
+                        if(sentToken){
+                            Toast.makeText(MainActivity.this, "GCM Token Sent", Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(MainActivity.this, "GCM Token Error", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                };
+
+                Intent intent = new Intent(this, RegistrationIntentService.class);
+                startService(intent);
+
             }
         }
     }
@@ -152,7 +193,6 @@ public class MainActivity extends GDNBaseActivity implements
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
     }
-
 
 }
 

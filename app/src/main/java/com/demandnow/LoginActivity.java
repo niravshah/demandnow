@@ -214,10 +214,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             //String accountId = gsa.getId();
             //String idToken = gsa.getIdToken();
-            SharedPrefrences.setAcctName(gsa.getDisplayName());
-            SharedPrefrences.setPhotUrl(gsa.getPhotoUrl().toString());
-            SharedPrefrences.setAcctEmail(gsa.getEmail());
-            SharedPrefrences.setCurrentService("Takeaway Delivery");
+            GDNSharedPrefrences.setAcctName(gsa.getDisplayName());
+            GDNSharedPrefrences.setPhotUrl(gsa.getPhotoUrl().toString());
+            GDNSharedPrefrences.setAcctEmail(gsa.getEmail());
+            GDNSharedPrefrences.setCurrentService("Takeaway Delivery");
             if (ContextCompat.checkSelfPermission(LoginActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(LoginActivity.this,
@@ -313,7 +313,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             String accountId = acct.getId();
             Uri personPhoto = acct.getPhotoUrl();
             String idToken = acct.getIdToken();
-            SharedPrefrences.setAcctName(acct.getDisplayName());
+            GDNSharedPrefrences.setAcctName(acct.getDisplayName());
 
             JSONObject data = new JSONObject();
             try {
@@ -340,7 +340,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         }
                     });
 
-            VolleySingleton.getInstance(this).addToRequestQueue(jsObjRequest);
+            GDNVolleySingleton.getInstance(this).addToRequestQueue(jsObjRequest);
 
         } else {
 

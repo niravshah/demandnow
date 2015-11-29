@@ -9,7 +9,11 @@ import java.util.ArrayList;
 /**
  * Created by Nirav on 21/11/2015.
  */
-public class SharedPrefrences {
+public class GDNSharedPrefrences {
+
+    public static final String SENT_TOKEN_TO_SERVER="sent_token_to_server";
+    public static final String REGISTRATION_COMPLETE="registration_complete";
+
 
     private static GoogleMap map;
     private static Location mLastLocation;
@@ -22,7 +26,7 @@ public class SharedPrefrences {
     }
 
     public static void setAcctEmail(String acctEmail) {
-        SharedPrefrences.acctEmail = acctEmail;
+        GDNSharedPrefrences.acctEmail = acctEmail;
     }
 
     private static String acctEmail;
@@ -32,17 +36,17 @@ public class SharedPrefrences {
     }
 
     public static void setPhotUrl(String photUrl) {
-        SharedPrefrences.photUrl = photUrl;
+        GDNSharedPrefrences.photUrl = photUrl;
     }
 
     private static String photUrl;
 
     public static GoogleMap getMap() {
-        return SharedPrefrences.map;
+        return GDNSharedPrefrences.map;
     }
 
     public static void setMap(GoogleMap map) {
-        SharedPrefrences.map = map;
+        GDNSharedPrefrences.map = map;
     }
 
     public static Location getLastLocation() {
@@ -50,7 +54,7 @@ public class SharedPrefrences {
     }
 
     public static void setLastLocation(Location mLastLocation) {
-        SharedPrefrences.mLastLocation = mLastLocation;
+        GDNSharedPrefrences.mLastLocation = mLastLocation;
     }
 
     public static String getAcctName() {
@@ -58,7 +62,7 @@ public class SharedPrefrences {
     }
 
     public static void setAcctName(String acctName) {
-        SharedPrefrences.acctName = acctName;
+        GDNSharedPrefrences.acctName = acctName;
     }
 
     public static ArrayList<String> getSubs() {
@@ -66,7 +70,7 @@ public class SharedPrefrences {
     }
 
     public static void setSubs(ArrayList<String> subs) {
-        SharedPrefrences.subs = subs;
+        GDNSharedPrefrences.subs = subs;
     }
 
     public static String getCurrentService() {
@@ -74,6 +78,6 @@ public class SharedPrefrences {
     }
 
     public static void setCurrentService(String currentService) {
-        SharedPrefrences.currentService = currentService;
+        GDNSharedPrefrences.currentService = currentService;
     }
 }

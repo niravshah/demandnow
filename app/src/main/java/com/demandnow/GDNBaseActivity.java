@@ -32,7 +32,7 @@ public abstract class GDNBaseActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_reorder_white_18dp);
-        actionBar.setTitle(SharedPrefrences.getCurrentService());
+        actionBar.setTitle(GDNSharedPrefrences.getCurrentService());
     }
 
     protected void renderChildActivityToolbar() {
@@ -58,10 +58,10 @@ public abstract class GDNBaseActivity extends AppCompatActivity {
 
         View drawerHeader = LayoutInflater.from(this).inflate(R.layout.drawer_header, navigationView);
         final TextView userName = (TextView) drawerHeader.findViewById(R.id.user_name_tv);
-        userName.setText(SharedPrefrences.getAcctName());
+        userName.setText(GDNSharedPrefrences.getAcctName());
         final CircleImageView imageView = (CircleImageView) drawerHeader.findViewById(R.id.profile_image);
 
-        ImageRequest request = new ImageRequest(SharedPrefrences.getPhotUrl(),
+        ImageRequest request = new ImageRequest(GDNSharedPrefrences.getPhotUrl(),
                 new Response.Listener<Bitmap>() {
                     @Override
                     public void onResponse(Bitmap bitmap) {
@@ -74,7 +74,7 @@ public abstract class GDNBaseActivity extends AppCompatActivity {
                     }
                 });
 
-        VolleySingleton.getInstance(this).addToRequestQueue(request);
+        GDNVolleySingleton.getInstance(this).addToRequestQueue(request);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.demandnow;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -10,20 +9,20 @@ import com.android.volley.toolbox.Volley;
 /**
  * Created by Nirav on 21/11/2015.
  */
-public class VolleySingleton {
+public class GDNVolleySingleton {
 
-    private static VolleySingleton mInstance;
+    private static GDNVolleySingleton mInstance;
     private RequestQueue mRequestQueue;
     private static Context mCtx;
 
-    private VolleySingleton(Context context) {
+    private GDNVolleySingleton(Context context) {
         mCtx = context;
         mRequestQueue = getRequestQueue();
     }
 
-    public static synchronized VolleySingleton getInstance(Context context) {
+    public static synchronized GDNVolleySingleton getInstance(Context context) {
         if (mInstance == null) {
-            mInstance = new VolleySingleton(context);
+            mInstance = new GDNVolleySingleton(context);
         }
         return mInstance;
     }

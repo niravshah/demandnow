@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.demandnow.MainActivity;
 import com.demandnow.R;
-import com.demandnow.SharedPrefrences;
+import com.demandnow.GDNSharedPrefrences;
 import com.demandnow.model.ContactInfo;
 
 import java.util.List;
@@ -57,7 +57,7 @@ public class ServiceSelectorAdapter extends RecyclerView.Adapter<ServiceSelector
             v.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
-                    SharedPrefrences.setCurrentService(info.getName());
+                    GDNSharedPrefrences.setCurrentService(info.getName());
                     v.getContext().startActivity(new Intent(v.getContext(), MainActivity.class));
                 }
             });

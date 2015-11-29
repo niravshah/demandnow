@@ -13,8 +13,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.demandnow.R;
-import com.demandnow.SharedPrefrences;
-import com.demandnow.VolleySingleton;
+import com.demandnow.GDNSharedPrefrences;
+import com.demandnow.GDNVolleySingleton;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -58,15 +58,15 @@ public class DashboardTabFragment extends Fragment {
         map.getUiSettings().setMyLocationButtonEnabled(true);
         map.setMyLocationEnabled(true);
         map.getUiSettings().setScrollGesturesEnabled(false);
-        SharedPrefrences.setMap(map);
+        GDNSharedPrefrences.setMap(map);
         // Updates the location and zoom of the MapView
-        if (SharedPrefrences.getLastLocation() != null) {
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(SharedPrefrences.getLastLocation().getLatitude(), SharedPrefrences.getLastLocation().getLongitude()), 10);
+        if (GDNSharedPrefrences.getLastLocation() != null) {
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(GDNSharedPrefrences.getLastLocation().getLatitude(), GDNSharedPrefrences.getLastLocation().getLongitude()), 10);
             map.animateCamera(cameraUpdate);
             String url = "http://morph-stadium.codio.io:3000/nearby/"
-                    + SharedPrefrences.getLastLocation().getLatitude()
+                    + GDNSharedPrefrences.getLastLocation().getLatitude()
                     + "/"
-                    + SharedPrefrences.getLastLocation().getLongitude();
+                    + GDNSharedPrefrences.getLastLocation().getLongitude();
             JsonObjectRequest jsObjRequest = new JsonObjectRequest
                     (Request.Method.GET, url, new Response.Listener<JSONObject>() {
                         @Override
@@ -99,7 +99,7 @@ public class DashboardTabFragment extends Fragment {
                         }
                     });
 
-            VolleySingleton.getInstance(getContext()).addToRequestQueue(jsObjRequest);
+            GDNVolleySingleton.getInstance(getContext()).addToRequestQueue(jsObjRequest);
         }
 
         return v;

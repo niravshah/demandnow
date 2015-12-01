@@ -31,7 +31,8 @@ public abstract class GDNBaseActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_reorder_white_18dp);
+        //actionBar.setHomeAsUpIndicator(R.drawable.ic_reorder_white_18dp);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_logo_4);
         actionBar.setTitle(GDNSharedPrefrences.getCurrentService());
     }
 

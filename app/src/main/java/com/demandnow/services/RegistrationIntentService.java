@@ -7,11 +7,19 @@ import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.demandnow.R;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.demandnow.GDNSharedPrefrences;
+import com.demandnow.GDNVolleySingleton;
+import com.demandnow.R;
 import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -68,14 +76,38 @@ public class RegistrationIntentService extends IntentService {
 
     /**
      * Persist registration to third-party servers.
-     *
+     * <p/>
      * Modify this method to associate the user's GCM registration token with any server-side account
      * maintained by your application.
      *
      * @param token The new token.
      */
     private void sendRegistrationToServer(String token) {
-        // Add custom implementation, as needed.
+
+        JSONObject data = new JSONObject();
+        try {
+            data.put("token", token);
+            data.put("personEmail", GDNSharedPrefrences.getAcctEmail());
+            data.put("accountId", GDNSharedPrefrences.getAcctId());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.POST, "http://morph-stadium.codio.io:3000/demandnow/gcm", data, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                        Log.e("VolleyErorr", "RegistrationIntentService - sendRegistrationToServer - " + error.getLocalizedMessage() + error.getMessage());
+                    }
+                });
+
+        GDNVolleySingleton.getInstance(this).addToRequestQueue(jsObjRequest);
     }
 
     /**

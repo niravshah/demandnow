@@ -18,6 +18,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.demandnow.services.RegistrationIntentService;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.credentials.Credential;
 import com.google.android.gms.auth.api.credentials.CredentialRequest;
@@ -197,11 +198,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         boolean isSignedIn = (gsr != null) && gsr.isSuccess();
         if (isSignedIn) {
-            // Display signed-in UI
             GoogleSignInAccount gsa = gsr.getSignInAccount();
-            String status = String.format("Signed in as %s (%s)", gsa.getDisplayName(),
-                    gsa.getEmail());
+            GDNSharedPrefrences.setAcctName(gsa.getDisplayName());
+            GDNSharedPrefrences.setPhotUrl(gsa.getPhotoUrl().toString());
+            GDNSharedPrefrences.setAcctEmail(gsa.getEmail());
+            GDNSharedPrefrences.setAcctId(gsa.getId());
 
+            GDNSharedPrefrences.setCurrentService("Takeaway Delivery");
 
             // Save Google Sign In to SmartLock
             Credential credential = new Credential.Builder(gsa.getEmail())
@@ -211,13 +214,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     .build();
 
             saveCredentialIfConnected(credential);
-
-            //String accountId = gsa.getId();
-            //String idToken = gsa.getIdToken();
-            GDNSharedPrefrences.setAcctName(gsa.getDisplayName());
-            GDNSharedPrefrences.setPhotUrl(gsa.getPhotoUrl().toString());
-            GDNSharedPrefrences.setAcctEmail(gsa.getEmail());
-            GDNSharedPrefrences.setCurrentService("Takeaway Delivery");
+            contactServerForSubscription(gsr);
+            startGCMRegistrationService();
             if (ContextCompat.checkSelfPermission(LoginActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(LoginActivity.this,
@@ -235,7 +233,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         findViewById(R.id.sign_in_button).setEnabled(!isSignedIn);
     }
 
-
+    private void startGCMRegistrationService() {
+        //GCM Registration once Google Services are available
+        Intent intent = new Intent(this, RegistrationIntentService.class);
+        startService(intent);
+    }
 
 
     private void saveCredentialIfConnected(Credential credential) {
@@ -313,7 +315,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             String accountId = acct.getId();
             Uri personPhoto = acct.getPhotoUrl();
             String idToken = acct.getIdToken();
-            GDNSharedPrefrences.setAcctName(acct.getDisplayName());
 
             JSONObject data = new JSONObject();
             try {

@@ -22,7 +22,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.demandnow.adapters.MainTabsPagerAdapter;
-import com.demandnow.services.RegistrationIntentService;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -142,9 +141,6 @@ public class MainActivity extends GDNBaseActivity implements
                 GDNSharedPrefrences.getMap().animateCamera(cameraUpdate);
                 JsonObjectRequest jsObjRequest = getJsonObjectRequest();
                 GDNVolleySingleton.getInstance(this).addToRequestQueue(jsObjRequest);
-                //GCM Registration once Google Services are available
-                Intent intent = new Intent(this, RegistrationIntentService.class);
-                startService(intent);
             }
         }
     }

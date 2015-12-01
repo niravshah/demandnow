@@ -20,6 +20,7 @@ public class GDNSharedPrefrences {
     private static String acctName;
     private static ArrayList<String> subs = new ArrayList<>();
     private static String currentService;
+    private static String acctId;
 
     public static String getAcctEmail() {
         return acctEmail;
@@ -79,5 +80,13 @@ public class GDNSharedPrefrences {
 
     public static void setCurrentService(String currentService) {
         GDNSharedPrefrences.currentService = currentService;
+    }
+
+    public static void setAcctId(String acctId) {
+        GDNSharedPrefrences.acctId = acctId;
+    }
+
+    public static String getAcctId() {
+        return acctId;
     }
 }

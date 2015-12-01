@@ -86,7 +86,7 @@ public class RegistrationIntentService extends IntentService {
 
         JSONObject data = new JSONObject();
         try {
-            data.put("token", token);
+            data.put("gcm", token);
             data.put("personEmail", GDNSharedPrefrences.getAcctEmail());
             data.put("accountId", GDNSharedPrefrences.getAcctId());
         } catch (JSONException e) {

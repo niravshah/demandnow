@@ -1,6 +1,5 @@
 package com.demandnow;
 
-import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -214,17 +213,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     .build();
 
             saveCredentialIfConnected(credential);
-            contactServerForSubscription(gsr);
             startGCMRegistrationService();
-            if (ContextCompat.checkSelfPermission(LoginActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(LoginActivity.this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        MY_PERMISSIONS_ACCESS_FINE_LOCATION);
-            } else {
 
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            }
+            contactServerForSubscription(gsr);
+
+
         } else {
             // Display signed-out UI
 
@@ -331,6 +324,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     (Request.Method.POST, "http://morph-stadium.codio.io:3000/demandnow/login", data, new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
+                            Boolean active = false;
+                            try {
+                                active = (Boolean) response.get("active");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            if (active) {
+                                if (ContextCompat.checkSelfPermission(LoginActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                                        != PackageManager.PERMISSION_GRANTED) {
+                                    ActivityCompat.requestPermissions(LoginActivity.this,
+                                            new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                                            MY_PERMISSIONS_ACCESS_FINE_LOCATION);
+                                } else {
+
+                                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                }
+                            }
 
                         }
                     }, new Response.ErrorListener() {

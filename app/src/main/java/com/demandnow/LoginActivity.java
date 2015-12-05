@@ -17,6 +17,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.demandnow.activity.NewUserRegistrationActivity;
 import com.demandnow.services.RegistrationIntentService;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.credentials.Credential;
@@ -223,7 +224,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         }
 
-        findViewById(R.id.sign_in_button).setEnabled(!isSignedIn);
+        findViewById(R.id.sign_in_button).setEnabled(true);
     }
 
     private void startGCMRegistrationService() {
@@ -325,8 +326,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         @Override
                         public void onResponse(JSONObject response) {
                             Boolean active = false;
+                            Boolean newUser = false;
                             try {
                                 active = (Boolean) response.get("active");
+                                newUser = (Boolean) response.get("new");
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -341,6 +344,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
                                 }
+                            }else if(newUser){
+
+                                startActivity(new Intent(getApplicationContext(), NewUserRegistrationActivity.class));
                             }
 
                         }

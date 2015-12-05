@@ -192,6 +192,7 @@ public class MainActivity extends GDNBaseActivity implements
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
+
     }
 
 }

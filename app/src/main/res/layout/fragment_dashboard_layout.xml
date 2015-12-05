@@ -31,7 +31,17 @@
             android:background="@drawable/transition"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:paddingTop="40dp"></LinearLayout>
+            android:paddingTop="40dp">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="INVITE FRIENDS"
+                android:id="@+id/app_invite"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/primary_dark"
+                android:elevation="20dp" />
+        </LinearLayout>
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton

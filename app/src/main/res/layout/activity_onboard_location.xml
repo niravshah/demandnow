@@ -29,11 +29,14 @@
         android:textIsSelectable="false" />
 
     <ImageView
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/imageView"
-        android:src="@drawable/location"/>
+        android:src="@drawable/location"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="20dp" />
 
     <Button
         android:layout_width="wrap_content"
@@ -42,7 +45,7 @@
         android:id="@+id/next2"
         android:layout_gravity="center_horizontal"
         android:textColor="#ffffff"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="10dp" />
 
 
 </LinearLayout>

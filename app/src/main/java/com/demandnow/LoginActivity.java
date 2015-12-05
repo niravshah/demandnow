@@ -17,7 +17,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.demandnow.activity.NewUserRegistrationActivity;
+import com.demandnow.onboard.NewUserRegistrationActivity;
 import com.demandnow.services.RegistrationIntentService;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.credentials.Credential;
@@ -86,6 +86,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void buildGoogleApiClient(String accountName) {
         GoogleSignInOptions.Builder gsoBuilder = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
+                .requestProfile()
                 .requestIdToken(getString(R.string.server_client_id));
 
         if (accountName != null) {
@@ -101,7 +102,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .enableAutoManage(this, this)
                 .addApi(Auth.CREDENTIALS_API)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gsoBuilder.build());
-
         mGoogleApiClient = builder.build();
     }
 

@@ -1,4 +1,4 @@
-package com.demandnow.onboard;
+package com.demandnow.activity.onboard;
 
 import android.content.Intent;
 import android.os.Bundle;

@@ -35,7 +35,7 @@
                 android:value=".MainActivity" />
         </activity>
         <activity
-            android:name=".ServiceSelectorActivity"
+            android:name=".activity.ServiceSelectorActivity"
             android:label="Service Selector"
             android:parentActivityName=".MainActivity">
             <meta-data
@@ -51,17 +51,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".onboard.NewUserRegistrationActivity"
+            android:name=".activity.onboard.NewUserRegistrationActivity"
             android:label="New User Registration"
             android:windowSoftInputMode="adjustPan">
         </activity>
         <activity
-            android:name=".onboard.LocationPermissionActivity"
+            android:name=".activity.onboard.LocationPermissionActivity"
             android:label="New User Registration"
-            android:parentActivityName=".onboard.NewUserRegistrationActivity">
+            android:parentActivityName=".activity.onboard.NewUserRegistrationActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".onboard.NewUserRegistrationActivity" />
+                android:value=".activity.onboard.NewUserRegistrationActivity" />
         </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

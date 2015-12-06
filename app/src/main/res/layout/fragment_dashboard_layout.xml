@@ -34,13 +34,14 @@
             android:paddingTop="40dp">
 
             <Button
-                android:layout_width="wrap_content"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text="INVITE FRIENDS"
                 android:id="@+id/app_invite"
                 android:layout_gravity="center_horizontal"
                 android:background="@color/primary_dark"
-                android:elevation="20dp" />
+                android:elevation="20dp"
+                android:textColor="#ffffff" />
         </LinearLayout>
     </LinearLayout>
 

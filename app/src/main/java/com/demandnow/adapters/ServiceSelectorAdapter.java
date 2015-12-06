@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.demandnow.MainActivity;
 import com.demandnow.R;
 import com.demandnow.GDNSharedPrefrences;
-import com.demandnow.model.ContactInfo;
+import com.demandnow.model.ServiceInfo;
 
 import java.util.List;
 
@@ -19,9 +19,9 @@ import java.util.List;
  */
 public class ServiceSelectorAdapter extends RecyclerView.Adapter<ServiceSelectorAdapter.ContactViewHolder> {
 
-    private List<ContactInfo> contactList;
+    private List<ServiceInfo> contactList;
 
-    public ServiceSelectorAdapter(List<ContactInfo> contactList) {
+    public ServiceSelectorAdapter(List<ServiceInfo> contactList) {
         this.contactList = contactList;
     }
 
@@ -32,8 +32,8 @@ public class ServiceSelectorAdapter extends RecyclerView.Adapter<ServiceSelector
 
     @Override
     public void onBindViewHolder(ContactViewHolder contactViewHolder, int i) {
-        ContactInfo ci = contactList.get(i);
-        contactViewHolder.vName.setText(ci.name);
+        ServiceInfo ci = contactList.get(i);
+        contactViewHolder.vName.setText(ci.getServiceName());
         contactViewHolder.info = ci;
     }
 
@@ -48,7 +48,7 @@ public class ServiceSelectorAdapter extends RecyclerView.Adapter<ServiceSelector
 
     public static class ContactViewHolder extends RecyclerView.ViewHolder {
         protected TextView vName;
-        protected ContactInfo info;
+        protected ServiceInfo info;
 
         public ContactViewHolder(View v) {
             super(v);
@@ -57,7 +57,7 @@ public class ServiceSelectorAdapter extends RecyclerView.Adapter<ServiceSelector
             v.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
-                    GDNSharedPrefrences.setCurrentService(info.getName());
+                    GDNSharedPrefrences.setCurrentService(info.getServiceName());
                     v.getContext().startActivity(new Intent(v.getContext(), MainActivity.class));
                 }
             });

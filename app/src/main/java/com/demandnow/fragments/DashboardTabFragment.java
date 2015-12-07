@@ -10,26 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.demandnow.GDNSharedPrefrences;
-import com.demandnow.GDNVolleySingleton;
 import com.demandnow.R;
 import com.google.android.gms.appinvite.AppInviteInvitation;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.Iterator;
 
 /**
  * Created by Nirav on 20/11/2015.
@@ -71,49 +56,6 @@ public class DashboardTabFragment extends Fragment implements View.OnClickListen
         map.setMyLocationEnabled(true);
         map.getUiSettings().setScrollGesturesEnabled(false);
         GDNSharedPrefrences.setMap(map);
-        // Updates the location and zoom of the MapView
-        if (GDNSharedPrefrences.getLastLocation() != null) {
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(GDNSharedPrefrences.getLastLocation().getLatitude(), GDNSharedPrefrences.getLastLocation().getLongitude()), 10);
-            map.animateCamera(cameraUpdate);
-            String url = "http://morph-stadium.codio.io:3000/nearby/"
-                    + GDNSharedPrefrences.getLastLocation().getLatitude()
-                    + "/"
-                    + GDNSharedPrefrences.getLastLocation().getLongitude();
-            JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                    (Request.Method.GET, url, new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            Log.i("LOGIN", response.toString());
-                            Iterator<String> keys = response.keys();
-                            while (keys.hasNext()) {
-                                try {
-                                    String ninja = keys.next();
-                                    JSONObject o = (JSONObject) response.get(ninja);
-
-                                    map.addMarker(new MarkerOptions()
-                                            .position(new LatLng(Double.parseDouble((String) o.get("latitude")),
-                                                    Double.parseDouble((String) o.get("longitude"))))
-                                            .title(ninja)
-                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_takeaway_icon)));
-
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-
-                            }
-
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            error.printStackTrace();
-                            Log.e("VolleyErorr", error.getLocalizedMessage() + error.getMessage());
-                        }
-                    });
-
-            GDNVolleySingleton.getInstance(getContext()).addToRequestQueue(jsObjRequest);
-        }
-
         return v;
     }
 

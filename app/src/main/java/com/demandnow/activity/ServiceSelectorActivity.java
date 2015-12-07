@@ -73,7 +73,7 @@ public class ServiceSelectorActivity extends GDNBaseActivity {
                             }
                         }
                         progressBar.setVisibility(View.GONE);
-                        ServiceSelectorAdapter adapter = new ServiceSelectorAdapter(list);
+                        ServiceSelectorAdapter adapter = new ServiceSelectorAdapter(ServiceSelectorActivity.this, list);
                         rv.setAdapter(adapter);
                     }
                 }, new Response.ErrorListener() {

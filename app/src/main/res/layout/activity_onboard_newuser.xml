@@ -59,6 +59,7 @@
 
     <EditText
         android:layout_centerInParent="true"
+        android:maxLines="1"
         android:layout_below="@id/textView3"
         android:layout_width="200dp"
         android:layout_height="30dp"
@@ -68,10 +69,14 @@
         android:background="#ffffff"
         android:textAlignment="center"
         android:hint="Password"
-        android:textSize="14dp" />
+        android:textSize="14dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:nextFocusDown="@+id/editText2"/>
 
     <EditText
         android:layout_below="@id/editText"
+        android:maxLines="1"
         android:layout_centerInParent="true"
         android:layout_width="200dp"
         android:layout_height="30dp"
@@ -80,7 +85,10 @@
         android:background="#ffffff"
         android:textAlignment="center"
         android:textSize="14dp"
-        android:hint="Repeat Password"/>
+        android:hint="Repeat Password"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:nextFocusDown="@+id/next1"/>
 
     <Button
         android:layout_centerInParent="true"
@@ -91,6 +99,6 @@
         android:id="@+id/next1"
         android:layout_gravity="center_horizontal"
         android:textColor="#ffffff"
-        android:layout_marginTop="80dp" />
-        -->
+        android:layout_marginTop="80dp"
+        android:nextFocusForward="@+id/editText2"/>
 </RelativeLayout>

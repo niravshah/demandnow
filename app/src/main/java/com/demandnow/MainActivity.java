@@ -148,7 +148,9 @@ public class MainActivity extends GDNBaseActivity implements
 
     @NonNull
     private JsonObjectRequest getJsonObjectRequest() {
-        String url = "http://morph-stadium.codio.io:3000/nearby/"
+        String url = "http://morph-stadium.codio.io:3000/"
+                + GDNSharedPrefrences.getServiceId()
+                + "/nearby/"
                 + GDNSharedPrefrences.getLastLocation().getLatitude()
                 + "/"
                 + GDNSharedPrefrences.getLastLocation().getLongitude();

@@ -14,13 +14,13 @@ public class GDNSharedPrefrences {
     public static final String SENT_TOKEN_TO_SERVER="sent_token_to_server";
     public static final String REGISTRATION_COMPLETE="registration_complete";
 
-
     private static GoogleMap map;
     private static Location mLastLocation;
     private static String acctName;
     private static ArrayList<String> subs = new ArrayList<>();
     private static String currentService;
     private static String acctId;
+    private static String serviceId;
 
     public static String getAcctEmail() {
         return acctEmail;
@@ -88,5 +88,13 @@ public class GDNSharedPrefrences {
 
     public static String getAcctId() {
         return acctId;
+    }
+
+    public static String getServiceId() {
+        return serviceId;
+    }
+
+    public static void setServiceId(String serviceId) {
+        GDNSharedPrefrences.serviceId = serviceId;
     }
 }

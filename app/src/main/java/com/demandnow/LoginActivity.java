@@ -204,8 +204,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             GDNSharedPrefrences.setAcctEmail(gsa.getEmail());
             GDNSharedPrefrences.setAcctId(gsa.getId());
 
-            GDNSharedPrefrences.setCurrentService("Takeaway Delivery");
-
             // Save Google Sign In to SmartLock
             Credential credential = new Credential.Builder(gsa.getEmail())
                     .setAccountType(IdentityProviders.GOOGLE)
@@ -215,9 +213,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             saveCredentialIfConnected(credential);
             startGCMRegistrationService();
-
             contactServerForSubscription(gsr);
-
 
         } else {
             // Display signed-out UI
@@ -327,14 +323,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         public void onResponse(JSONObject response) {
                             Boolean active = false;
                             Boolean newUser = false;
+                            String defaultService = "s1";
                             try {
                                 active = (Boolean) response.get("active");
                                 newUser = (Boolean) response.get("new");
+                                defaultService = (String) response.get("defaultService");
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
 
                             if (active) {
+                                GDNSharedPrefrences.setServiceId(defaultService);
                                 if (ContextCompat.checkSelfPermission(LoginActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                                         != PackageManager.PERMISSION_GRANTED) {
                                     ActivityCompat.requestPermissions(LoginActivity.this,

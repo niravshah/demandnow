@@ -324,16 +324,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             Boolean active = false;
                             Boolean newUser = false;
                             String defaultService = "s1";
+                            String defaultServiceName = "Takeaway Delivery";
                             try {
                                 active = (Boolean) response.get("active");
                                 newUser = (Boolean) response.get("new");
                                 defaultService = (String) response.get("defaultService");
+                                defaultServiceName = (String) response.get("defaultServiceName");
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
 
                             if (active) {
                                 GDNSharedPrefrences.setServiceId(defaultService);
+                                GDNSharedPrefrences.setCurrentService(defaultServiceName);
                                 if (ContextCompat.checkSelfPermission(LoginActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                                         != PackageManager.PERMISSION_GRANTED) {
                                     ActivityCompat.requestPermissions(LoginActivity.this,

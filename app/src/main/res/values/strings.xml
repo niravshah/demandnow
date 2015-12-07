@@ -17,5 +17,9 @@
     <string name="invitation_custom_image">https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png</string>
     <string name="invitation_cta">Install !!</string>
     <string name="sent_invitations_fmt">Sent %d invitations</string>
+    <string name="service_not_available">Geocoder Service Not Available</string>
+    <string name="invalid_lat_long_used">Invalid Latitude Longitude</string>
+    <string name="no_address_found">No Corresponding Address Found</string>
+    <string name="address_found">Address Found</string>
 
 </resources>

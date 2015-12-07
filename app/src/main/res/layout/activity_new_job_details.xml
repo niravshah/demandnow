@@ -17,11 +17,109 @@
             android:layout_height="wrap_content"
             android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-            <include layout="@layout/fragment_app_bar"/>
-
+            <include layout="@layout/fragment_app_bar" />
         </android.support.design.widget.AppBarLayout>
+
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:weightSum="1">
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/viewA"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.5"
+                android:gravity="center_vertical|center_horizontal">
+
+                <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/jobdetails_map"
+                    android:name="com.google.android.gms.maps.MapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/allSubs"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.5"
+                android:background="@drawable/transition"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingTop="20dp"
+                android:weightSum="100">
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/addData"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:weightSum="100">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="20">
+                        <EditText
+                            android:id="@+id/houseNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Number"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"/>
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="40">
+                        <EditText
+                            android:id="@+id/streetName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Street"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"/>
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="30">
+                        <EditText
+                            android:id="@+id/postCode"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Postcode"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <ImageButton
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="10"
+                        android:id="@+id/address_search_btn"
+                        android:src="@drawable/ic_search_white_18dp"
+                        android:layout_gravity="right"/>
+                </LinearLayout>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Request Service"
+                    android:id="@+id/button2"
+                    android:layout_gravity="center_horizontal" />
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+
     </android.support.design.widget.CoordinatorLayout>
 
-    <include layout="@layout/fragment_navigation_view"/>
+    <include layout="@layout/fragment_navigation_view" />
 
 </android.support.v4.widget.DrawerLayout>

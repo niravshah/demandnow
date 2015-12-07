@@ -83,6 +83,7 @@ public class ServiceSelectorAdapter extends RecyclerView.Adapter<ServiceSelector
                 @Override
                 public void onClick(View v) {
                     GDNSharedPrefrences.setCurrentService(info.getServiceName());
+                    GDNSharedPrefrences.setServiceId(info.getServiceId());
                     v.getContext().startActivity(new Intent(v.getContext(), MainActivity.class));
                 }
             });

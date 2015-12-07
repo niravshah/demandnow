@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.demandnow.GDNSharedPrefrences;
+import com.demandnow.NewJobDetailsActivity;
 import com.demandnow.R;
 import com.google.android.gms.appinvite.AppInviteInvitation;
 import com.google.android.gms.maps.GoogleMap;
@@ -40,15 +41,9 @@ public class DashboardTabFragment extends Fragment implements View.OnClickListen
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-
-
         View v = inflater.inflate(R.layout.fragment_dashboard_layout, container, false);
-
-
         v.findViewById(R.id.app_invite).setOnClickListener(this);
-
-        // Gets the MapView from the XML layout and creates it
+        v.findViewById(R.id.fab).setOnClickListener(this);
         mapView = (MapView) v.findViewById(R.id.mapview);
         mapView.onCreate(savedInstanceState);
         map = mapView.getMap();
@@ -57,6 +52,22 @@ public class DashboardTabFragment extends Fragment implements View.OnClickListen
         map.getUiSettings().setScrollGesturesEnabled(false);
         GDNSharedPrefrences.setMap(map);
         return v;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.app_invite:
+                onInviteClicked();
+                break;
+            case R.id.fab:
+                startNewJobDetailsActivity();
+                break;
+        }
+    }
+
+    private void startNewJobDetailsActivity() {
+        startActivity(new Intent(getContext(), NewJobDetailsActivity.class));
     }
 
     @Override
@@ -108,12 +119,5 @@ public class DashboardTabFragment extends Fragment implements View.OnClickListen
         }
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.app_invite:
-                onInviteClicked();
-                break;
-        }
-    }
+
 }

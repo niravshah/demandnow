@@ -101,4 +101,5 @@
         android:textColor="#ffffff"
         android:layout_marginTop="80dp"
         android:nextFocusForward="@+id/editText2"/>
+    -->
 </RelativeLayout>

@@ -7,6 +7,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
+import android.support.v4.app.NavUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import com.demandnow.services.Constants;
 import com.demandnow.services.FetchAddressIntentService;
 import com.demandnow.services.FetchLocationIntentService;
+import com.demandnow.services.SubmitNewJobService;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -32,6 +34,8 @@ public class NewJobDetailsActivity extends GDNBaseActivity implements OnMapReady
     private EditText mPostcode;
     private GoogleMap map;
     private ProgressDialog mProgressDialog;
+    private Double deliveryLatitude;
+    private Double deliveryLongitude;
 
 
     @Override
@@ -49,6 +53,7 @@ public class NewJobDetailsActivity extends GDNBaseActivity implements OnMapReady
         mStreetName = (EditText) findViewById(R.id.streetName);
         mPostcode = (EditText) findViewById(R.id.postCode);
         findViewById(R.id.address_search_btn).setOnClickListener(this);
+        findViewById(R.id.request_service).setOnClickListener(this);
     }
 
     @Override
@@ -83,7 +88,25 @@ public class NewJobDetailsActivity extends GDNBaseActivity implements OnMapReady
             case R.id.address_search_btn:
                 convertAddressToLocation();
                 break;
+            case R.id.request_service:
+                requestService();
+                break;
         }
+    }
+
+    private void requestService() {
+        String serviceId = GDNSharedPrefrences.getServiceId();
+        Double pickupLong = GDNSharedPrefrences.getLastLocation().getLongitude();
+        Double pickupLat = GDNSharedPrefrences.getLastLocation().getLatitude();
+        Intent intent = new Intent(this, SubmitNewJobService.class);
+        intent.putExtra(Constants.SubmitNewJobService.DELIVERY_LATITUDE,deliveryLatitude.toString());
+        intent.putExtra(Constants.SubmitNewJobService.DELIVERY_LONGITUDE,deliveryLongitude.toString());
+        intent.putExtra(Constants.SubmitNewJobService.PICKUP_LATITUDE,pickupLat.toString());
+        intent.putExtra(Constants.SubmitNewJobService.PICKUP_LONGITUDE,pickupLong.toString());
+        intent.putExtra(Constants.SubmitNewJobService.SERVICE,serviceId);
+        startService(intent);
+        Toast.makeText(this, "Job Submitted", Toast.LENGTH_LONG).show();
+        NavUtils.navigateUpFromSameTask(this);
     }
 
     private void convertAddressToLocation() {
@@ -146,9 +169,10 @@ public class NewJobDetailsActivity extends GDNBaseActivity implements OnMapReady
             // Show a toast message if an address was found.
             if (resultCode == Constants.SUCCESS_RESULT) {
                 hideProgress();
+                findViewById(R.id.request_service).setEnabled(true);
                 Toast.makeText(NewJobDetailsActivity.this,  resultData.getString(Constants.RESULT_DATA_KEY), Toast.LENGTH_LONG).show();
-                Double lat = resultData.getDouble(Constants.LATITUDE);
-                Double lon = resultData.getDouble(Constants.LONGITUDE);
+                Double lat = deliveryLatitude = resultData.getDouble(Constants.LATITUDE);
+                Double lon = deliveryLongitude = resultData.getDouble(Constants.LONGITUDE);
                 LatLng latlng = new LatLng(lat,lon);
                 CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latlng, 15);
                 map.addMarker(new MarkerOptions().position(latlng));

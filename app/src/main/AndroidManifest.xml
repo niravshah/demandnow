@@ -108,6 +108,9 @@
         <service
             android:name=".services.FetchLocationIntentService"
             android:exported="false"/>
+        <service
+            android:name=".services.SubmitNewJobService"
+            android:exported="false"/>
 
     </application>
 

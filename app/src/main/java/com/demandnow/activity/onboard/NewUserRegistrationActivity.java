@@ -12,6 +12,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.demandnow.GDNApiHelper;
 import com.demandnow.GDNSharedPrefrences;
 import com.demandnow.GDNVolleySingleton;
 import com.demandnow.R;
@@ -68,7 +69,7 @@ public class NewUserRegistrationActivity extends AppCompatActivity implements Vi
         }
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.POST, "http://morph-stadium.codio.io:3000/demandnow/activate", data, new Response.Listener<JSONObject>() {
+                (Request.Method.POST, GDNApiHelper.ACTIVATE_URL, data, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
 

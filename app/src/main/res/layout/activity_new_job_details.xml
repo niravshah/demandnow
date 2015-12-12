@@ -56,54 +56,44 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
                     android:orientation="horizontal"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
                     android:weightSum="100">
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="20">
-                        <EditText
-                            android:id="@+id/houseNumber"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Number"
-                            android:focusable="true"
-                            android:focusableInTouchMode="true"/>
-                    </android.support.design.widget.TextInputLayout>
-
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="40">
-                        <EditText
-                            android:id="@+id/streetName"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Street"
-                            android:focusable="true"
-                            android:focusableInTouchMode="true"/>
-                    </android.support.design.widget.TextInputLayout>
-
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="30">
-                        <EditText
+                        android:layout_weight="50"
+                        android:layout_marginRight="10dp">
+                        <AutoCompleteTextView
                             android:id="@+id/postCode"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Postcode"
                             android:focusable="true"
-                            android:focusableInTouchMode="true" />
+                            android:focusableInTouchMode="true"
+                            android:popupBackground="@color/primary_dark"/>
                     </android.support.design.widget.TextInputLayout>
 
                     <ImageButton
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="10"
+                        android:layout_weight="20"
                         android:id="@+id/address_search_btn"
                         android:src="@drawable/ic_search_white_18dp"
                         android:layout_gravity="right"/>
+                </LinearLayout>
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:orientation="vertical" >
+                    <Spinner
+                        android:id="@+id/dynamic_spinner"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:popupBackground="@color/primary_dark" />
+
                 </LinearLayout>
                 <Button
                     android:layout_width="wrap_content"
@@ -113,7 +103,6 @@
                     android:id="@+id/request_service"
                     android:layout_gravity="center_horizontal"
                     android:enabled="false"/>
-
 
             </LinearLayout>
         </LinearLayout>

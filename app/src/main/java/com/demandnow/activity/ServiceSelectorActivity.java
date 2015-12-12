@@ -11,6 +11,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.demandnow.GDNApiHelper;
 import com.demandnow.GDNBaseActivity;
 import com.demandnow.GDNVolleySingleton;
 import com.demandnow.R;
@@ -53,7 +54,7 @@ public class ServiceSelectorActivity extends GDNBaseActivity {
     private void getContactList(final RecyclerView rv) {
 
         JsonArrayRequest jsObjRequest = new JsonArrayRequest
-                (Request.Method.GET, "http://morph-stadium.codio.io:3000/demandnow/services", new Response.Listener<JSONArray>() {
+                (Request.Method.GET, GDNApiHelper.SERVICES_URL, new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
                         List<ServiceInfo> list = new ArrayList<>();

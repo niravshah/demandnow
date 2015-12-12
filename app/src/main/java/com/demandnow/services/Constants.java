@@ -16,6 +16,7 @@ public class Constants {
     public static final String ADDRESS_DATA_EXTRA = ".ADDRESS_DATA_EXTRA";
     public static final String LATITUDE = ".LATITUDE";
     public static final String LONGITUDE = ".LONGITUDE";
+    public static final String POSTCODE = ".POSTCODE";
 
     public class SubmitNewJobService{
         public static final String DELIVERY_LATITUDE = "DELIVERY_LATITUDE";

@@ -8,14 +8,23 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.demandnow.services.Constants;
 import com.demandnow.services.FetchAddressIntentService;
 import com.demandnow.services.FetchLocationIntentService;
+import com.demandnow.services.PostcodesIntentService;
 import com.demandnow.services.SubmitNewJobService;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -25,17 +34,23 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
 public class NewJobDetailsActivity extends GDNBaseActivity implements OnMapReadyCallback, View.OnClickListener {
 
     private AddressResultReceiver mResultReceiver;
     private LocationResultReceiver mLocationReciever;
-    private EditText mHouseNumber;
-    private EditText mStreetName;
-    private EditText mPostcode;
+    private PostcodesResultReceiver mPostcodesReciever;
+    private AutoCompleteTextView mPostcode;
     private GoogleMap map;
     private ProgressDialog mProgressDialog;
     private Double deliveryLatitude;
     private Double deliveryLongitude;
+    private Spinner dynamicSpinner;
 
 
     @Override
@@ -49,11 +64,24 @@ public class NewJobDetailsActivity extends GDNBaseActivity implements OnMapReady
         mapFragment.getMapAsync(this);
         mResultReceiver = new AddressResultReceiver(new Handler());
         mLocationReciever = new LocationResultReceiver(new Handler());
-        mHouseNumber = (EditText) findViewById(R.id.houseNumber);
-        mStreetName = (EditText) findViewById(R.id.streetName);
-        mPostcode = (EditText) findViewById(R.id.postCode);
+        mPostcodesReciever = new PostcodesResultReceiver(new Handler());
+        mPostcode = (AutoCompleteTextView) findViewById(R.id.postCode);
         findViewById(R.id.address_search_btn).setOnClickListener(this);
         findViewById(R.id.request_service).setOnClickListener(this);
+
+        dynamicSpinner = (Spinner) findViewById(R.id.dynamic_spinner);
+        dynamicSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,int position, long id) {
+                Log.v("item", (String) parent.getItemAtPosition(position));
+                findViewById(R.id.request_service).setEnabled(true);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO Auto-generated method stub
+            }
+        });
+
     }
 
     @Override
@@ -86,12 +114,52 @@ public class NewJobDetailsActivity extends GDNBaseActivity implements OnMapReady
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.address_search_btn:
-                convertAddressToLocation();
+                //convertAddressToLocation();
+                getAddressFromAddress();
                 break;
             case R.id.request_service:
                 requestService();
                 break;
         }
+    }
+
+    private void getAddressFromAddress() {
+        String url = GDNApiHelper.ADDRESS_URL + "/" + mPostcode.getText().toString();
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.GET, url, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        JSONArray items;
+                        ArrayList<String> arr = new ArrayList<>();
+                        try {
+
+                            Double lat = deliveryLatitude = response.getDouble("Latitude");
+                            Double lon = deliveryLongitude = response.getDouble("Longitude");
+                            LatLng latlng = new LatLng(lat,lon);
+                            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latlng, 15);
+                            map.addMarker(new MarkerOptions().position(latlng));
+                            map.animateCamera(cameraUpdate);
+                            items = (JSONArray) response.get("Addresses");
+                            for(int i=0;i<items.length();i++){
+                                arr.add(items.getString(i));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        ArrayAdapter<String> addressAdapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_spinner_item, arr);
+                        dynamicSpinner.setAdapter(addressAdapter);
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                        Log.e("VolleyErorr", "getAddressFromAddress - " + error.getLocalizedMessage() + error.getMessage());
+                    }
+                });
+
+
+        GDNVolleySingleton.getInstance(this).addToRequestQueue(jsObjRequest);
     }
 
     private void requestService() {
@@ -116,9 +184,7 @@ public class NewJobDetailsActivity extends GDNBaseActivity implements OnMapReady
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
         showProgress();
-        String address = mHouseNumber.getText().toString() + " "
-                + mStreetName.getText().toString() + " "
-                +  mPostcode.getText().toString();
+        String address = mPostcode.getText().toString();
         Intent intent = new Intent(this, FetchLocationIntentService.class);
         intent.putExtra(Constants.RECEIVER, mLocationReciever);
         intent.putExtra(Constants.ADDRESS_DATA_EXTRA, address);
@@ -152,11 +218,36 @@ public class NewJobDetailsActivity extends GDNBaseActivity implements OnMapReady
             // Show a toast message if an address was found.
             if (resultCode == Constants.SUCCESS_RESULT) {
                 Toast.makeText(NewJobDetailsActivity.this,  resultData.getString(Constants.RESULT_DATA_KEY), Toast.LENGTH_LONG).show();
+                String postCode = resultData.getString(Constants.POSTCODE);
+                if(postCode != null){
+                    Intent intent = new Intent(getApplicationContext(), PostcodesIntentService.class);
+                    intent.putExtra(Constants.RECEIVER, mPostcodesReciever);
+                    intent.putExtra(Constants.POSTCODE,postCode);
+                    startService(intent);
+                }
             }
 
         }
     }
 
+    class PostcodesResultReceiver extends ResultReceiver {
+
+        public PostcodesResultReceiver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        protected void onReceiveResult(int resultCode, Bundle resultData) {
+            // Show a toast message if an address was found.
+            if (resultCode == Constants.SUCCESS_RESULT) {
+                ArrayList<String> postCodes = resultData.getStringArrayList(Constants.RESULT_DATA_KEY);
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplication(),android.R.layout.simple_list_item_1,postCodes);
+                mPostcode = (AutoCompleteTextView) findViewById(R.id.postCode);
+                mPostcode.setAdapter(adapter);
+                mPostcode.setThreshold(2);
+            }
+        }
+    }
 
     class LocationResultReceiver extends ResultReceiver {
 
@@ -178,6 +269,8 @@ public class NewJobDetailsActivity extends GDNBaseActivity implements OnMapReady
                 map.addMarker(new MarkerOptions().position(latlng));
                 map.animateCamera(cameraUpdate);
             }
+
+
 
         }
     }

@@ -9,6 +9,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.demandnow.GDNApiHelper;
 import com.demandnow.GDNSharedPrefrences;
 import com.demandnow.GDNVolleySingleton;
 
@@ -36,14 +37,14 @@ public class SubmitNewJobService extends IntentService {
         String pickupLat = intent.getStringExtra(Constants.SubmitNewJobService.PICKUP_LATITUDE);
         String pickupLon = intent.getStringExtra(Constants.SubmitNewJobService.PICKUP_LONGITUDE);
         String serviceId = intent.getStringExtra(Constants.SubmitNewJobService.SERVICE);
-        String url = "job/" + serviceId + "/" + GDNSharedPrefrences.getAcctId() + "/" + pickupLat + "/" + pickupLon + "/" + delLat + "/" + delLon;
+        String url = "/job/" + serviceId + "/" + GDNSharedPrefrences.getAcctId() + "/" + pickupLat + "/" + pickupLon + "/" + delLat + "/" + delLon;
         JsonObjectRequest jsonObjectRequest = getJsonObjectRequest(url);
         GDNVolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
     }
 
     @NonNull
     private JsonObjectRequest getJsonObjectRequest(String urlz) {
-        String url = "http://morph-stadium.codio.io:3000/" + urlz;
+        String url = GDNApiHelper.BASE_URL + urlz;
         return new JsonObjectRequest
                 (Request.Method.GET, url, new Response.Listener<JSONObject>() {
                     @Override

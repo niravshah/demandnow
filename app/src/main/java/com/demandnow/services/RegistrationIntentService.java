@@ -11,6 +11,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.demandnow.GDNApiHelper;
 import com.demandnow.GDNSharedPrefrences;
 import com.demandnow.GDNVolleySingleton;
 import com.demandnow.R;
@@ -94,7 +95,7 @@ public class RegistrationIntentService extends IntentService {
         }
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.POST, "http://morph-stadium.codio.io:3000/demandnow/gcm", data, new Response.Listener<JSONObject>() {
+                (Request.Method.POST, GDNApiHelper.GCM_URL, data, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
 

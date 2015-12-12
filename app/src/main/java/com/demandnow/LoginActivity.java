@@ -318,7 +318,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
 
             JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                    (Request.Method.POST, "http://morph-stadium.codio.io:3000/demandnow/login", data, new Response.Listener<JSONObject>() {
+                    (Request.Method.POST, GDNApiHelper.LOGIN_URL, data, new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
                             Boolean active = false;

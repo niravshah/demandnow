@@ -12,6 +12,7 @@ public class GDNApiHelper {
     public static final String GCM_URL = BASE_URL + "/gcm";
     public static final String SERVICES_URL = BASE_URL + "/services";
     public static final String ADDRESS_URL = BASE_URL + "/addresses";
+    public static final String JOBS_URL = BASE_URL + "/jobs";
 
 
 }

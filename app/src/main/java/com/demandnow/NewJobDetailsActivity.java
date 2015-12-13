@@ -114,7 +114,6 @@ public class NewJobDetailsActivity extends GDNBaseActivity implements OnMapReady
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.address_search_btn:
-                //convertAddressToLocation();
                 getAddressFromAddress();
                 break;
             case R.id.request_service:
@@ -124,7 +123,7 @@ public class NewJobDetailsActivity extends GDNBaseActivity implements OnMapReady
     }
 
     private void getAddressFromAddress() {
-        String url = GDNApiHelper.ADDRESS_URL + "/" + mPostcode.getText().toString();
+        String url = GDNApiHelper.ADDRESS_URL + "/" + mPostcode.getText().toString().replaceAll("\\s+","");
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, url, new Response.Listener<JSONObject>() {
                     @Override

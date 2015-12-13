@@ -13,6 +13,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -46,6 +47,8 @@ public class MainActivity extends GDNBaseActivity implements
     private BroadcastReceiver mRegistrationBroadcastReceiver;
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -61,6 +64,9 @@ public class MainActivity extends GDNBaseActivity implements
         viewPager.setAdapter(adapter);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tablayout);
         tabLayout.setupWithViewPager(viewPager);
+
+
+
     }
 
     private void initializeBroadcastReciever() {

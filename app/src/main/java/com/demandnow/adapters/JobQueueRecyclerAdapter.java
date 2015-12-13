@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.demandnow.R;
+import com.demandnow.model.JobInfo;
 
 import java.util.List;
 
@@ -15,9 +16,9 @@ import java.util.List;
  */
 public class JobQueueRecyclerAdapter extends RecyclerView.Adapter<JobQueueRecyclerAdapter.ViewHolder> {
 
-    private List<String> mItems;
+    private List<JobInfo> mItems;
 
-    public JobQueueRecyclerAdapter(List<String> items) {
+    public JobQueueRecyclerAdapter(List<JobInfo> items) {
         mItems = items;
     }
 
@@ -29,8 +30,9 @@ public class JobQueueRecyclerAdapter extends RecyclerView.Adapter<JobQueueRecycl
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        String item = mItems.get(i);
-        viewHolder.mTextView.setText(item);
+        JobInfo item = mItems.get(i);
+        viewHolder.mJobItem.setText(item.getJobId());
+        viewHolder.mJobItemstatus.setText(item.getJobStatus());
     }
 
     @Override
@@ -40,12 +42,27 @@ public class JobQueueRecyclerAdapter extends RecyclerView.Adapter<JobQueueRecycl
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private final TextView mTextView;
+        private final TextView mJobItem;
+        private final TextView mJobItemstatus;
+
 
         ViewHolder(View v) {
             super(v);
-            mTextView = (TextView)v.findViewById(R.id.list_item);
+            mJobItem = (TextView)v.findViewById(R.id.job_item);
+            mJobItemstatus = (TextView)v.findViewById(R.id.job_item_status);
         }
+    }
+
+    // Clean all elements of the recycler
+    public void clear() {
+        mItems.clear();
+        notifyDataSetChanged();
+    }
+
+    // Add a list of items
+    public void addAll(List<JobInfo> list) {
+        mItems.addAll(list);
+        notifyDataSetChanged();
     }
 
 }

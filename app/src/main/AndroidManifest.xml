@@ -43,6 +43,15 @@
                 android:value=".MainActivity" />
 
         </activity>
+        <activity
+            android:name=".activity.JobDetailViewActivity"
+            android:label="Job Details"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+
+        </activity>
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

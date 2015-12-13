@@ -37,6 +37,7 @@ public class JobQueueTabFragment extends Fragment {
     private static final String TAB_POSITION = "tab_position";
     public static final String TAB_NAME = "Job Queue";
     private SwipeRefreshLayout swipeContainer;
+    private Boolean swipeRefresh = false;
 
     public JobQueueTabFragment() {
 
@@ -55,22 +56,17 @@ public class JobQueueTabFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View v =  inflater.inflate(R.layout.rv_job_queue, container, false);
-        RecyclerView recyclerView = (RecyclerView)v.findViewById(R.id.recyclerview);
+        final RecyclerView recyclerView = (RecyclerView)v.findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
-        // Setup refresh listener which triggers new data loading
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                // Your code to refresh the list here.
-                // Make sure you call swipeContainer.setRefreshing(false)
-                // once the network request has completed successfully.
-                swipeContainer.setRefreshing(false);
-                Toast.makeText(getActivity(), "Swipe Refresh", Toast.LENGTH_LONG).show();
+                swipeRefresh = true;
+                getCurrentJobQueueFromServer(recyclerView);
             }
         });
-        // Configure the refreshing colors
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
@@ -98,8 +94,11 @@ public class JobQueueTabFragment extends Fragment {
                             }
 
                         }
-
-                        recyclerView.setAdapter(new JobQueueRecyclerAdapter(jobInfos));
+                        recyclerView.setAdapter(new JobQueueRecyclerAdapter(getContext(),jobInfos));
+                        if(swipeRefresh){
+                            swipeContainer.setRefreshing(false);
+                            Toast.makeText(getActivity(), "Swipe Refresh", Toast.LENGTH_LONG).show();
+                        }
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -109,11 +108,7 @@ public class JobQueueTabFragment extends Fragment {
                     }
                 });
 
-
         GDNVolleySingleton.getInstance(getContext()).addToRequestQueue(jsObjRequest);
-
-
-
     }
 
 

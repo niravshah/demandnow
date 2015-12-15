@@ -21,5 +21,6 @@
     <string name="invalid_lat_long_used">Invalid Latitude Longitude</string>
     <string name="no_address_found">No Corresponding Address Found</string>
     <string name="address_found">Address Found</string>
+    <string name="action_job_summary">Job Summary</string>
 
 </resources>

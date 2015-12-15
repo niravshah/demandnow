@@ -13,7 +13,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -22,6 +21,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.demandnow.activity.JobSummaryViewActivity;
 import com.demandnow.activity.ServiceSelectorActivity;
 import com.demandnow.adapters.MainTabsPagerAdapter;
 import com.google.android.gms.common.ConnectionResult;
@@ -129,6 +129,9 @@ public class MainActivity extends GDNBaseActivity implements
                 return true;
             case R.id.action_service_selector:
                 startActivity(new Intent(this,ServiceSelectorActivity.class));
+            case R.id.action_job_summary:
+                startActivity(new Intent(this,JobSummaryViewActivity.class));
+
 
         }
 

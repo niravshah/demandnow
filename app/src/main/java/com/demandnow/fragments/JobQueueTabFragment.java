@@ -17,7 +17,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.demandnow.GDNApiHelper;
-import com.demandnow.GDNSharedPrefrences;
 import com.demandnow.GDNVolleySingleton;
 import com.demandnow.R;
 import com.demandnow.adapters.JobQueueRecyclerAdapter;
@@ -77,7 +76,7 @@ public class JobQueueTabFragment extends Fragment {
 
     private void getCurrentJobQueueFromServer(final RecyclerView recyclerView) {
 
-        String url = GDNApiHelper.JOBS_URL + "/" + GDNSharedPrefrences.getAcctId();
+        String url = GDNApiHelper.JOBS_URL;
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, url, new Response.Listener<JSONObject>() {
                     @Override

@@ -61,9 +61,12 @@ public class JobQueueRecyclerAdapter extends RecyclerView.Adapter<JobQueueRecycl
 
         @Override
         public void onClick(View v) {
-            int position = getLayoutPosition(); // gets item position
-            Toast.makeText(context, "Clicked Item: " + position, Toast.LENGTH_SHORT).show();
-            context.startActivity(new Intent(context, JobDetailViewActivity.class));
+
+            Toast.makeText(context, "Clicked Item: " + mJobItem.getText(), Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(context, JobDetailViewActivity.class);
+            intent.putExtra("JOB_ID",  mJobItem.getText());
+            context.startActivity(intent) ;
+
         }
     }
 

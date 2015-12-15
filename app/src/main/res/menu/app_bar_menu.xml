@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/action_job_summary"
+        android:icon="@drawable/ic_emoticon"
+        android:title="@string/action_job_summary"
+        app:showAsAction="ifRoom"/>
+    <item
         android:id="@+id/action_service_selector"
         android:icon="@drawable/ic_pageview_white_36dp"
         android:title="@string/action_service_selector"

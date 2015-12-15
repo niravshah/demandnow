@@ -1,7 +1,9 @@
 package com.demandnow;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +18,8 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
+import com.demandnow.activity.JobSummaryViewActivity;
+import com.demandnow.activity.ServiceSelectorActivity;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -83,5 +87,25 @@ public abstract class GDNBaseActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.app_bar_menu, menu);
         return true;
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+            case R.id.action_service_selector:
+                startActivity(new Intent(this,ServiceSelectorActivity.class));
+                return true;
+            case R.id.action_job_summary:
+                startActivity(new Intent(this,JobSummaryViewActivity.class));
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
 }

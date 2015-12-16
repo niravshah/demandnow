@@ -45,9 +45,8 @@ public class MainActivity extends GDNBaseActivity implements
     private Location mLastLocation;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     private GoogleMap map;
-    public static final String TAB_NAME = "Dashboard";
     private static final int REQUEST_INVITE = 9000;
-    private static final String TAG = "DashboardTabFragment";
+    private static final String TAG = "MainActivity";
     private static final int RESULT_OK = -1;
 
     @Override
@@ -63,8 +62,7 @@ public class MainActivity extends GDNBaseActivity implements
         findViewById(R.id.fab).setOnClickListener(this);
         findViewById(R.id.app_invite).setOnClickListener(this);
 
-        MapFragment mapFragment = (MapFragment) getFragmentManager()
-                .findFragmentById(R.id.jobdetails_map);
+        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.jobdetails_map);
         mapFragment.getMapAsync(this);
 
     }
@@ -124,6 +122,10 @@ public class MainActivity extends GDNBaseActivity implements
             GDNSharedPrefrences.setLastLocation(mLastLocation);
             Toast.makeText(MainActivity.this, "Location Updated", Toast.LENGTH_LONG).show();
             if (GDNSharedPrefrences.getMap() != null) {
+
+                GDNSharedPrefrences.getMap().getUiSettings().setMyLocationButtonEnabled(true);
+                GDNSharedPrefrences.getMap().setMyLocationEnabled(true);
+                GDNSharedPrefrences.getMap().getUiSettings().setScrollGesturesEnabled(false);
                 CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()), 15);
                 GDNSharedPrefrences.getMap().animateCamera(cameraUpdate);
                 JsonObjectRequest jsObjRequest = getJsonObjectRequest();

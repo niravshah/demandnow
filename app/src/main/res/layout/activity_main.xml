@@ -26,13 +26,8 @@
                 android:id="@+id/viewA"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.5"
+                android:layout_weight="0.7"
                 android:gravity="center_vertical|center_horizontal">
-
-                <!--com.google.android.gms.maps.MapView
-                    android:id="@+id/mapview"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent" /-->
 
                 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/jobdetails_map"
@@ -46,7 +41,7 @@
                 android:id="@+id/allSubs"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.5"
+                android:layout_weight="0.3"
                 android:background="@drawable/transition"
                 android:gravity="center_horizontal"
                 android:orientation="vertical"

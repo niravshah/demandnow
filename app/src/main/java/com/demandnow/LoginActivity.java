@@ -1,6 +1,8 @@
 package com.demandnow;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
@@ -28,6 +30,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -42,6 +45,7 @@ import org.json.JSONObject;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
 
 
+
     private String TAG = "LoginActivity";
 
     private static final String KEY_IS_RESOLVING = "is_resolving";
@@ -52,6 +56,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private static final int RC_CREDENTIALS_READ = 2;
     private static final int RC_CREDENTIALS_SAVE = 3;
     private static final int MY_PERMISSIONS_ACCESS_FINE_LOCATION = 10;
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 12;
 
     private GoogleApiClient mGoogleApiClient;
     private ProgressDialog mProgressDialog;
@@ -77,8 +82,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             mCredentialToSave = savedInstanceState.getParcelable(KEY_CREDENTIAL_TO_SAVE);
         }
 
-        // Build GoogleApiClient, don't set account name
-        buildGoogleApiClient(null);
+        if(checkPlayServices()) {
+            buildGoogleApiClient(null);
+        }
 
     }
 
@@ -416,5 +422,26 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
         }
+    }
+
+    protected boolean checkPlayServices() {
+        final int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+                Dialog dialog = GooglePlayServicesUtil.getErrorDialog(resultCode, this,
+                        PLAY_SERVICES_RESOLUTION_REQUEST);
+                if (dialog != null) {
+                    dialog.show();
+                    dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        public void onDismiss(DialogInterface dialog) {
+                            if (ConnectionResult.SERVICE_INVALID == resultCode) finish();
+                        }
+                    });
+                    return false;
+                }
+            }
+
+        }
+        return true;
     }
 }

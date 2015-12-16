@@ -6,7 +6,7 @@ import android.support.v4.view.ViewPager;
 
 import com.demandnow.GDNBaseActivity;
 import com.demandnow.R;
-import com.demandnow.adapters.JobSummaryTabsPagerAdapter;
+import com.demandnow.adapters.JobTabsPagerAdapter;
 
 /**
  * Created by Nirav on 15/12/2015.
@@ -19,7 +19,7 @@ public class JobSummaryViewActivity extends GDNBaseActivity{
         setContentView(R.layout.activity_job_summary_view);
         renderNavigationDrawer();
         renderChildActivityToolbar();
-        JobSummaryTabsPagerAdapter adapter = new JobSummaryTabsPagerAdapter(getSupportFragmentManager());
+        JobTabsPagerAdapter adapter = new JobTabsPagerAdapter(getSupportFragmentManager());
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(adapter);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tablayout);

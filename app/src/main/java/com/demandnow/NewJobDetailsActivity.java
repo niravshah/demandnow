@@ -60,7 +60,7 @@ public class NewJobDetailsActivity extends GDNBaseActivity implements OnMapReady
         renderChildActivityToolbar();
         renderNavigationDrawer();
         MapFragment mapFragment = (MapFragment) getFragmentManager()
-                .findFragmentById(R.id.jobdetails_map);
+                .findFragmentById(R.id.jobdetails_map_new);
         mapFragment.getMapAsync(this);
         mResultReceiver = new AddressResultReceiver(new Handler());
         mLocationReciever = new LocationResultReceiver(new Handler());

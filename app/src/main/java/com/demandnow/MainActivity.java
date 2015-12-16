@@ -44,7 +44,6 @@ public class MainActivity extends GDNBaseActivity implements
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
-    private GoogleMap map;
     private static final int REQUEST_INVITE = 9000;
     private static final String TAG = "MainActivity";
     private static final int RESULT_OK = -1;
@@ -186,16 +185,15 @@ public class MainActivity extends GDNBaseActivity implements
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        map = googleMap;
-        map.getUiSettings().setMyLocationButtonEnabled(true);
-        map.setMyLocationEnabled(true);
-        map.getUiSettings().setScrollGesturesEnabled(false);
 
-        GDNSharedPrefrences.setMap(map);
+        GDNSharedPrefrences.setMap(googleMap);
+        GDNSharedPrefrences.getMap().getUiSettings().setMyLocationButtonEnabled(true);
+        GDNSharedPrefrences.getMap().setMyLocationEnabled(true);
+        GDNSharedPrefrences.getMap().getUiSettings().setScrollGesturesEnabled(false);
         if (GDNSharedPrefrences.getLastLocation() != null) {
             Location lastLocation = GDNSharedPrefrences.getLastLocation();
             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()), 15);
-            map.animateCamera(cameraUpdate);
+            GDNSharedPrefrences.getMap().animateCamera(cameraUpdate);
         }
     }
 

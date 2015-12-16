@@ -16,11 +16,13 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 import com.demandnow.GDNApiHelper;
 import com.demandnow.GDNVolleySingleton;
 import com.demandnow.R;
-import com.demandnow.adapters.JobQueueRecyclerAdapter;
+import com.demandnow.adapters.PendingJobsExpandableAdapter;
 import com.demandnow.model.JobInfo;
+import com.demandnow.model.ParentJobInfo;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,20 +32,21 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- * Created by Nirav on 20/11/2015.
+ * Created by Nirav on 16/12/2015.
  */
-public class JobQueueTabFragment extends Fragment {
+public class PendingJobsTabFragment extends Fragment {
+
     private static final String TAB_POSITION = "tab_position";
-    public static final String TAB_NAME = "Job Queue";
+    public static final String TAB_NAME = "Payment Pending";
     private SwipeRefreshLayout swipeContainer;
     private Boolean swipeRefresh = false;
 
-    public JobQueueTabFragment() {
+    public PendingJobsTabFragment() {
 
     }
 
-    public static JobQueueTabFragment newInstance(int tabPosition) {
-        JobQueueTabFragment fragment = new JobQueueTabFragment();
+    public static PendingJobsTabFragment newInstance(int tabPosition) {
+        PendingJobsTabFragment fragment = new PendingJobsTabFragment();
         Bundle args = new Bundle();
         args.putInt(TAB_POSITION, tabPosition);
         fragment.setArguments(args);
@@ -54,8 +57,8 @@ public class JobQueueTabFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View v =  inflater.inflate(R.layout.rv_job_queue, container, false);
-        final RecyclerView recyclerView = (RecyclerView)v.findViewById(R.id.recyclerview);
+        View v =  inflater.inflate(R.layout.rv_pending_job_queue, container, false);
+        final RecyclerView recyclerView = (RecyclerView)v.findViewById(R.id.recyclerview_pending);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
@@ -82,7 +85,7 @@ public class JobQueueTabFragment extends Fragment {
                     @Override
                     public void onResponse(JSONObject response) {
                         Iterator<String> respIterator = response.keys();
-                        ArrayList<JobInfo> jobInfos = new ArrayList<>();
+                        ArrayList<Object> jobInfos = new ArrayList<>();
                         while(respIterator.hasNext()){
                             String next = respIterator.next();
                             try {
@@ -93,7 +96,17 @@ public class JobQueueTabFragment extends Fragment {
                             }
 
                         }
-                        recyclerView.setAdapter(new JobQueueRecyclerAdapter(getContext(),jobInfos));
+
+                        ArrayList<ParentObject> pInfos = new ArrayList<>();
+                        ParentJobInfo pinfo = new ParentJobInfo();
+                        pinfo.setChildObjectList(jobInfos);
+
+                        PendingJobsExpandableAdapter mCrimeExpandableAdapter = new PendingJobsExpandableAdapter(getActivity(), pInfos);
+                        mCrimeExpandableAdapter.setCustomParentAnimationViewId(R.id.parent_list_item_expand_arrow);
+                        mCrimeExpandableAdapter.setParentClickableViewAnimationDefaultDuration();
+                        mCrimeExpandableAdapter.setParentAndIconExpandOnClick(true);
+                        recyclerView.setAdapter(mCrimeExpandableAdapter);
+
                         if(swipeRefresh){
                             swipeContainer.setRefreshing(false);
                             Toast.makeText(getActivity(), "Swipe Refresh", Toast.LENGTH_LONG).show();
@@ -110,8 +123,4 @@ public class JobQueueTabFragment extends Fragment {
         GDNVolleySingleton.getInstance(getContext()).addToRequestQueue(jsObjRequest);
     }
 
-
 }
-
-
-

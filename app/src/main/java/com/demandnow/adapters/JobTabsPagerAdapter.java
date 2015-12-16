@@ -4,17 +4,16 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.demandnow.fragments.JobQueueTabFragment;
+import com.demandnow.fragments.CurrentJobsTabFragment;
+import com.demandnow.fragments.PendingJobsTabFragment;
 
 /**
  * Created by Nirav on 15/12/2015.
  */
-public class JobSummaryTabsPagerAdapter extends FragmentStatePagerAdapter {
+public class JobTabsPagerAdapter extends FragmentStatePagerAdapter {
 
-    private FragmentManager mgr;
-    public JobSummaryTabsPagerAdapter(FragmentManager fm) {
+    public JobTabsPagerAdapter(FragmentManager fm) {
         super(fm);
-        mgr = fm;
     }
 
 
@@ -22,9 +21,9 @@ public class JobSummaryTabsPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return JobQueueTabFragment.newInstance(position);
+                return CurrentJobsTabFragment.newInstance(position);
             case 1:
-                return JobQueueTabFragment.newInstance(position);
+                return PendingJobsTabFragment.newInstance(position);
             default:
                 return null;
         }
@@ -40,9 +39,9 @@ public class JobSummaryTabsPagerAdapter extends FragmentStatePagerAdapter {
 
         switch (position) {
             case 0:
-                return JobQueueTabFragment.TAB_NAME;
+                return CurrentJobsTabFragment.TAB_NAME;
             case 1:
-                return JobQueueTabFragment.TAB_NAME;
+                return PendingJobsTabFragment.TAB_NAME;
             default:
                 return null;
         }

@@ -3,7 +3,7 @@ package com.demandnow;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
+import android.support.v4.app.NavUtils;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -34,9 +34,9 @@ public abstract class GDNBaseActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        //actionBar.setDisplayHomeAsUpEnabled(true);
         //actionBar.setHomeAsUpIndicator(R.drawable.ic_reorder_white_18dp);
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_logo_4);
+        //actionBar.setHomeAsUpIndicator(R.drawable.ic_logo_4);
         actionBar.setTitle(GDNSharedPrefrences.getCurrentService());
     }
 
@@ -94,7 +94,8 @@ public abstract class GDNBaseActivity extends AppCompatActivity {
 
         switch (id) {
             case android.R.id.home:
-                mDrawerLayout.openDrawer(GravityCompat.START);
+                //mDrawerLayout.openDrawer(GravityCompat.START);
+                NavUtils.navigateUpFromSameTask(this);
                 return true;
             case R.id.action_service_selector:
                 startActivity(new Intent(this,ServiceSelectorActivity.class));

@@ -25,4 +25,6 @@ public class JobSummaryViewActivity extends GDNBaseActivity{
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tablayout);
         tabLayout.setupWithViewPager(viewPager);
     }
+
+
 }

@@ -10,7 +10,7 @@ import java.util.List;
 public class ParentJobInfo implements ParentObject {
 
     private List<Object> mChildrenList;
-    private int title;
+    private String title;
 
     @Override
     public List<Object> getChildObjectList() {
@@ -22,11 +22,11 @@ public class ParentJobInfo implements ParentObject {
         this.mChildrenList = list;
     }
 
-    public int getTitle() {
+    public String getTitle() {
         return title;
     }
 
-    public void setTitle(int title) {
+    public void setTitle(String title) {
         this.title = title;
     }
 }

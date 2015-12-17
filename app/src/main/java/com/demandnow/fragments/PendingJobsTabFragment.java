@@ -99,6 +99,7 @@ public class PendingJobsTabFragment extends Fragment {
 
                         ArrayList<ParentObject> pInfos = new ArrayList<>();
                         ParentJobInfo pinfo = new ParentJobInfo();
+                        pinfo.setTitle('Test Parent')
                         pinfo.setChildObjectList(jobInfos);
 
                         PendingJobsExpandableAdapter mCrimeExpandableAdapter = new PendingJobsExpandableAdapter(getActivity(), pInfos);

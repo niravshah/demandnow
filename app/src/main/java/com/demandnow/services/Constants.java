@@ -24,6 +24,7 @@ public class Constants {
         public static final String PICKUP_LATITUDE = "PICKUP_LATITUDE";
         public static final String PICKUP_LONGITUDE = "PICKUP_LONGITUDE";
         public static final String SERVICE = "SERVICE";
+        public static final String DELIVERY_ADDRESS = "DELIVERY_ADDRESS";
     }
 
 }

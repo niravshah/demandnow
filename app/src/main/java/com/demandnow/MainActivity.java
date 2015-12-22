@@ -60,6 +60,7 @@ public class MainActivity extends GDNBaseActivity implements
         buildGoogleApiClient();
         findViewById(R.id.fab).setOnClickListener(this);
         findViewById(R.id.app_invite).setOnClickListener(this);
+        findViewById(R.id.request_service).setOnClickListener(this);
 
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.jobdetails_map);
         mapFragment.getMapAsync(this);
@@ -120,16 +121,24 @@ public class MainActivity extends GDNBaseActivity implements
         if (mLastLocation != null) {
             GDNSharedPrefrences.setLastLocation(mLastLocation);
             Toast.makeText(MainActivity.this, "Location Updated", Toast.LENGTH_LONG).show();
-            if (GDNSharedPrefrences.getMap() != null) {
+            setupMap();
+            getNearbyNinjas();
+        }
+    }
 
-                GDNSharedPrefrences.getMap().getUiSettings().setMyLocationButtonEnabled(true);
-                GDNSharedPrefrences.getMap().setMyLocationEnabled(true);
-                GDNSharedPrefrences.getMap().getUiSettings().setScrollGesturesEnabled(false);
-                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()), 15);
-                GDNSharedPrefrences.getMap().animateCamera(cameraUpdate);
-                JsonObjectRequest jsObjRequest = getJsonObjectRequest();
-                GDNVolleySingleton.getInstance(this).addToRequestQueue(jsObjRequest);
-            }
+    private void setupMap(){
+        if (GDNSharedPrefrences.getMap() != null) {
+            GDNSharedPrefrences.getMap().getUiSettings().setMyLocationButtonEnabled(true);
+            GDNSharedPrefrences.getMap().setMyLocationEnabled(true);
+            GDNSharedPrefrences.getMap().getUiSettings().setScrollGesturesEnabled(false);
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()), 15);
+            GDNSharedPrefrences.getMap().animateCamera(cameraUpdate);
+        }
+    }
+    private void getNearbyNinjas() {
+        if (GDNSharedPrefrences.getMap() != null) {
+            JsonObjectRequest jsObjRequest = getJsonObjectRequest();
+            GDNVolleySingleton.getInstance(this).addToRequestQueue(jsObjRequest);
         }
     }
 
@@ -163,6 +172,7 @@ public class MainActivity extends GDNBaseActivity implements
                             }
 
                         }
+                        Toast.makeText(MainActivity.this, "Map Updated", Toast.LENGTH_LONG).show();
 
                     }
                 }, new Response.ErrorListener() {
@@ -237,8 +247,12 @@ public class MainActivity extends GDNBaseActivity implements
                 onInviteClicked();
                 break;
             case R.id.fab:
+                getNearbyNinjas();
+                break;
+            case R.id.request_service:
                 startNewJobDetailsActivity();
                 break;
+
         }
     }
 }

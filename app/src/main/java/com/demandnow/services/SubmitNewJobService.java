@@ -13,6 +13,7 @@ import com.demandnow.GDNApiHelper;
 import com.demandnow.GDNSharedPrefrences;
 import com.demandnow.GDNVolleySingleton;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -33,20 +34,27 @@ public class SubmitNewJobService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         String delLat = intent.getStringExtra(Constants.SubmitNewJobService.DELIVERY_LATITUDE);
-        String delLon = intent.getStringExtra(Constants.SubmitNewJobService.PICKUP_LONGITUDE);
+        String delLon = intent.getStringExtra(Constants.SubmitNewJobService.DELIVERY_LONGITUDE);
         String pickupLat = intent.getStringExtra(Constants.SubmitNewJobService.PICKUP_LATITUDE);
         String pickupLon = intent.getStringExtra(Constants.SubmitNewJobService.PICKUP_LONGITUDE);
         String serviceId = intent.getStringExtra(Constants.SubmitNewJobService.SERVICE);
+        String deliveryAddress = intent.getStringExtra(Constants.SubmitNewJobService.DELIVERY_ADDRESS);
+        JSONObject data = new JSONObject();
+        try {
+            data.put("deliveryAddress", deliveryAddress);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         String url = "/job/" + serviceId + "/" + GDNSharedPrefrences.getAcctId() + "/" + pickupLat + "/" + pickupLon + "/" + delLat + "/" + delLon;
-        JsonObjectRequest jsonObjectRequest = getJsonObjectRequest(url);
+        JsonObjectRequest jsonObjectRequest = getJsonObjectRequest(url,data);
         GDNVolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
     }
 
     @NonNull
-    private JsonObjectRequest getJsonObjectRequest(String urlz) {
+    private JsonObjectRequest getJsonObjectRequest(String urlz, JSONObject data) {
         String url = GDNApiHelper.BASE_URL + urlz;
         return new JsonObjectRequest
-                (Request.Method.GET, url, new Response.Listener<JSONObject>() {
+                (Request.Method.POST, url,data, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.i(TAG , response.toString());

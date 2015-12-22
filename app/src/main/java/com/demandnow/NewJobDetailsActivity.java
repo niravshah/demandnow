@@ -51,7 +51,7 @@ public class NewJobDetailsActivity extends GDNBaseActivity implements OnMapReady
     private Double deliveryLatitude;
     private Double deliveryLongitude;
     private Spinner dynamicSpinner;
-
+    private String deliveryAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +74,7 @@ public class NewJobDetailsActivity extends GDNBaseActivity implements OnMapReady
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,int position, long id) {
                 Log.v("item", (String) parent.getItemAtPosition(position));
+                deliveryAddress = (String) parent.getItemAtPosition(position);
                 findViewById(R.id.request_service).setEnabled(true);
             }
             @Override
@@ -171,6 +172,7 @@ public class NewJobDetailsActivity extends GDNBaseActivity implements OnMapReady
         intent.putExtra(Constants.SubmitNewJobService.PICKUP_LATITUDE,pickupLat.toString());
         intent.putExtra(Constants.SubmitNewJobService.PICKUP_LONGITUDE,pickupLong.toString());
         intent.putExtra(Constants.SubmitNewJobService.SERVICE,serviceId);
+        intent.putExtra(Constants.SubmitNewJobService.DELIVERY_ADDRESS,deliveryAddress);
         startService(intent);
         Toast.makeText(this, "Job Submitted", Toast.LENGTH_LONG).show();
         NavUtils.navigateUpFromSameTask(this);

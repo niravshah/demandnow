@@ -45,11 +45,21 @@
                 android:background="@drawable/transition"
                 android:gravity="center_horizontal"
                 android:orientation="vertical"
-                android:paddingTop="40dp">
+                android:paddingTop="20dp">
 
                 <Button
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
+                    android:text="REQUEST SERVICE"
+                    android:id="@+id/request_service"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@color/primary_dark"
+                    android:elevation="20dp"
+                    android:textColor="#ffffff" />
+                <Button
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
                     android:text="INVITE FRIENDS"
                     android:id="@+id/app_invite"
                     android:layout_gravity="center_horizontal"
@@ -65,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:clickable="true"
-            android:src="@drawable/ic_store_white_48dp"
+            android:src="@drawable/ic_refresh_white_36dp"
             app:layout_anchor="@id/viewA"
             app:layout_anchorGravity="bottom|right|end" />
     </android.support.design.widget.CoordinatorLayout>

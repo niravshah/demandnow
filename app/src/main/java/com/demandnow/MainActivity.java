@@ -58,7 +58,6 @@ public class MainActivity extends GDNBaseActivity implements
         renderNavigationDrawer();
         initializeBroadcastReciever();
         buildGoogleApiClient();
-        findViewById(R.id.fab).setOnClickListener(this);
         findViewById(R.id.app_invite).setOnClickListener(this);
         findViewById(R.id.request_service).setOnClickListener(this);
 
@@ -245,9 +244,6 @@ public class MainActivity extends GDNBaseActivity implements
         switch (v.getId()) {
             case R.id.app_invite:
                 onInviteClicked();
-                break;
-            case R.id.fab:
-                getNearbyNinjas();
                 break;
             case R.id.request_service:
                 startNewJobDetailsActivity();

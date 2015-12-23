@@ -11,7 +11,6 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.demandnow.MainActivity;
-import com.demandnow.R;
 import com.google.android.gms.gcm.GcmListenerService;
 
 /**
@@ -75,7 +74,6 @@ public class GDNGcmListenerService extends GcmListenerService {
                 .setContentText(message)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
-                .setSmallIcon(R.drawable.loc_icon)
                 .setContentIntent(pendingIntent);
 
         NotificationManager notificationManager =

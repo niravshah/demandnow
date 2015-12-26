@@ -45,14 +45,14 @@ public class SubmitNewJobService extends IntentService {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        String url = "/job/" + serviceId + "/" + GDNSharedPrefrences.getAcctId() + "/" + pickupLat + "/" + pickupLon + "/" + delLat + "/" + delLon;
+        String url =  serviceId + "/" + GDNSharedPrefrences.getAcctId() + "/" + pickupLat + "/" + pickupLon + "/" + delLat + "/" + delLon;
         JsonObjectRequest jsonObjectRequest = getJsonObjectRequest(url,data);
         GDNVolleySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
     }
 
     @NonNull
     private JsonObjectRequest getJsonObjectRequest(String urlz, JSONObject data) {
-        String url = GDNApiHelper.BASE_URL + urlz;
+        String url = GDNApiHelper.NEW_REQUEST_URL + urlz;
         return new JsonObjectRequest
                 (Request.Method.POST, url,data, new Response.Listener<JSONObject>() {
                     @Override

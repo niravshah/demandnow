@@ -15,11 +15,11 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.demandnow.GDNApiHelper;
 import com.demandnow.GDNVolleySingleton;
 import com.demandnow.R;
-import com.demandnow.adapters.CurrentJobsRecyclerAdapter;
+import com.demandnow.adapters.InProgressRecyclerAdapter;
 import com.demandnow.model.JobInfo;
 
 import org.json.JSONArray;
@@ -27,23 +27,22 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
- * Created by Nirav on 20/11/2015.
+ * Created by Nirav on 26/12/2015.
  */
-public class CurrentJobsTabFragment extends Fragment {
+public class AllJobsTabFragment extends Fragment {
     private static final String TAB_POSITION = "tab_position";
-    public static final String TAB_NAME = "Current";
+    public static final String TAB_NAME = "All";
     private SwipeRefreshLayout swipeContainer;
     private Boolean swipeRefresh = false;
 
-    public CurrentJobsTabFragment() {
+    public AllJobsTabFragment() {
 
     }
 
-    public static CurrentJobsTabFragment newInstance(int tabPosition) {
-        CurrentJobsTabFragment fragment = new CurrentJobsTabFragment();
+    public static AllJobsTabFragment newInstance(int tabPosition) {
+        AllJobsTabFragment fragment = new AllJobsTabFragment();
         Bundle args = new Bundle();
         args.putInt(TAB_POSITION, tabPosition);
         fragment.setArguments(args);
@@ -54,8 +53,8 @@ public class CurrentJobsTabFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View v =  inflater.inflate(R.layout.rv_current_job_queue, container, false);
-        final RecyclerView recyclerView = (RecyclerView)v.findViewById(R.id.recyclerview);
+        View v = inflater.inflate(R.layout.rv_all_job_queue, container, false);
+        final RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.alljobs_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
@@ -76,25 +75,23 @@ public class CurrentJobsTabFragment extends Fragment {
 
     private void getCurrentJobQueueFromServer(final RecyclerView recyclerView) {
 
-        String url = GDNApiHelper.JOBS_URL;
-        JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, url, new Response.Listener<JSONObject>() {
+        String url = GDNApiHelper.JOBS_URL + "/live";
+        JsonArrayRequest jsObjRequest = new JsonArrayRequest
+                (Request.Method.GET, url, new Response.Listener<JSONArray>() {
                     @Override
-                    public void onResponse(JSONObject response) {
-                        Iterator<String> respIterator = response.keys();
+                    public void onResponse(JSONArray response) {
                         ArrayList<JobInfo> jobInfos = new ArrayList<>();
-                        while(respIterator.hasNext()){
-                            String next = respIterator.next();
+                        for (int i = 0; i < response.length(); i++) {
                             try {
-                                JSONArray arr = (JSONArray) response.get(next);
-                                jobInfos.add(new JobInfo(next,arr.getString(1)));
+                                JSONObject obj = (JSONObject) response.get(i);
+                                jobInfos.add(new JobInfo(obj.getString("jobId"), obj.getString("currentStatus")));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
                         }
-                        recyclerView.setAdapter(new CurrentJobsRecyclerAdapter(getContext(),jobInfos));
-                        if(swipeRefresh){
+
+                        recyclerView.setAdapter(new InProgressRecyclerAdapter(getContext(), jobInfos));
+                        if (swipeRefresh) {
                             swipeContainer.setRefreshing(false);
                             Toast.makeText(getActivity(), "Swipe Refresh", Toast.LENGTH_LONG).show();
                         }

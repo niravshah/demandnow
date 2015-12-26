@@ -75,9 +75,9 @@ public class MainActivity extends GDNBaseActivity implements
                 boolean sentToken = sharedPreferences
                         .getBoolean(GDNSharedPrefrences.SENT_TOKEN_TO_SERVER, false);
                 if(sentToken){
-                    Toast.makeText(MainActivity.this, "GCM Token Sent", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(MainActivity.this, "GCM Token Sent", Toast.LENGTH_LONG).show();
                 }else{
-                    Toast.makeText(MainActivity.this, "GCM Token Error", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(MainActivity.this, "GCM Token Error", Toast.LENGTH_LONG).show();
                 }
             }
         };
@@ -94,6 +94,12 @@ public class MainActivity extends GDNBaseActivity implements
         super.onResume();
         LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
                 new IntentFilter(GDNSharedPrefrences.REGISTRATION_COMPLETE));
+        if (mLastLocation != null) {
+            GDNSharedPrefrences.setLastLocation(mLastLocation);
+            setupMap();
+            getNearbyNinjas();
+        }
+
     }
 
     @Override
@@ -119,7 +125,7 @@ public class MainActivity extends GDNBaseActivity implements
                 mGoogleApiClient);
         if (mLastLocation != null) {
             GDNSharedPrefrences.setLastLocation(mLastLocation);
-            Toast.makeText(MainActivity.this, "Location Updated", Toast.LENGTH_LONG).show();
+            //Toast.makeText(MainActivity.this, "Location Updated", Toast.LENGTH_LONG).show();
             setupMap();
             getNearbyNinjas();
         }
@@ -171,7 +177,7 @@ public class MainActivity extends GDNBaseActivity implements
                             }
 
                         }
-                        Toast.makeText(MainActivity.this, "Map Updated", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(MainActivity.this, "Map Updated", Toast.LENGTH_LONG).show();
 
                     }
                 }, new Response.ErrorListener() {

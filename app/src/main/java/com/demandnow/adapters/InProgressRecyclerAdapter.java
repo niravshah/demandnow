@@ -18,11 +18,11 @@ import java.util.List;
 /**
  * Created by Nirav on 21/11/2015.
  */
-public class CurrentJobsRecyclerAdapter extends RecyclerView.Adapter<CurrentJobsRecyclerAdapter.ViewHolder> {
+public class InProgressRecyclerAdapter extends RecyclerView.Adapter<InProgressRecyclerAdapter.ViewHolder> {
 
     private List<JobInfo> mItems;
     private Context context;
-    public CurrentJobsRecyclerAdapter(Context ctx, List<JobInfo> items) {
+    public InProgressRecyclerAdapter(Context ctx, List<JobInfo> items) {
         context = ctx; mItems = items;
     }
 

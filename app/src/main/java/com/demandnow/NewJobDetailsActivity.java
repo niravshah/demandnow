@@ -66,7 +66,20 @@ public class NewJobDetailsActivity extends GDNBaseActivity implements OnMapReady
         mLocationReciever = new LocationResultReceiver(new Handler());
         mPostcodesReciever = new PostcodesResultReceiver(new Handler());
         mPostcode = (AutoCompleteTextView) findViewById(R.id.postCode);
-        findViewById(R.id.address_search_btn).setOnClickListener(this);
+
+        mPostcode.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                in.hideSoftInputFromWindow(arg1.getApplicationWindowToken(), 0);
+                getAddressFromAddress();
+                showProgress();
+            }
+
+        });
+
+        //findViewById(R.id.address_search_btn).setOnClickListener(this);
         findViewById(R.id.request_service).setOnClickListener(this);
 
         dynamicSpinner = (Spinner) findViewById(R.id.dynamic_spinner);
@@ -114,9 +127,9 @@ public class NewJobDetailsActivity extends GDNBaseActivity implements OnMapReady
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.address_search_btn:
+            /*case R.id.address_search_btn:
                 getAddressFromAddress();
-                break;
+                break;*/
             case R.id.request_service:
                 requestService();
                 break;
@@ -143,6 +156,8 @@ public class NewJobDetailsActivity extends GDNBaseActivity implements OnMapReady
                             for(int i=0;i<items.length();i++){
                                 arr.add(items.getString(i));
                             }
+
+                            hideProgress();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -218,7 +233,7 @@ public class NewJobDetailsActivity extends GDNBaseActivity implements OnMapReady
         protected void onReceiveResult(int resultCode, Bundle resultData) {
             // Show a toast message if an address was found.
             if (resultCode == Constants.SUCCESS_RESULT) {
-                Toast.makeText(NewJobDetailsActivity.this,  resultData.getString(Constants.RESULT_DATA_KEY), Toast.LENGTH_LONG).show();
+                //Toast.makeText(NewJobDetailsActivity.this,  resultData.getString(Constants.RESULT_DATA_KEY), Toast.LENGTH_LONG).show();
                 String postCode = resultData.getString(Constants.POSTCODE);
                 if(postCode != null){
                     Intent intent = new Intent(getApplicationContext(), PostcodesIntentService.class);
@@ -262,7 +277,7 @@ public class NewJobDetailsActivity extends GDNBaseActivity implements OnMapReady
             if (resultCode == Constants.SUCCESS_RESULT) {
                 hideProgress();
                 findViewById(R.id.request_service).setEnabled(true);
-                Toast.makeText(NewJobDetailsActivity.this,  resultData.getString(Constants.RESULT_DATA_KEY), Toast.LENGTH_LONG).show();
+                //Toast.makeText(NewJobDetailsActivity.this,  resultData.getString(Constants.RESULT_DATA_KEY), Toast.LENGTH_LONG).show();
                 Double lat = deliveryLatitude = resultData.getDouble(Constants.LATITUDE);
                 Double lon = deliveryLongitude = resultData.getDouble(Constants.LONGITUDE);
                 LatLng latlng = new LatLng(lat,lon);

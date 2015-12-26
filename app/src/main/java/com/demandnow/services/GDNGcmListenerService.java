@@ -11,6 +11,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.demandnow.MainActivity;
+import com.demandnow.R;
 import com.google.android.gms.gcm.GcmListenerService;
 
 /**
@@ -19,6 +20,9 @@ import com.google.android.gms.gcm.GcmListenerService;
 public class GDNGcmListenerService extends GcmListenerService {
 
     private static final String TAG = "MyGcmListenerService";
+    private String requesterId;
+    private String jobId;
+    private String address;
 
     /**
      * Called when message is received.
@@ -31,6 +35,14 @@ public class GDNGcmListenerService extends GcmListenerService {
     @Override
     public void onMessageReceived(String from, Bundle data) {
         String message = data.getString("gcm.notification.message");
+
+        String jobDetails = data.getString("details");
+        String[] parts = jobDetails.split(":");
+
+        requesterId = parts[0];
+        jobId = parts[1];
+        address = parts[6];
+
         Log.d(TAG, "From: " + from);
         Log.d(TAG, "Message: " + message);
 
@@ -70,8 +82,9 @@ public class GDNGcmListenerService extends GcmListenerService {
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setContentTitle("GCM Message")
-                .setContentText(message)
+                .setSmallIcon(R.drawable.ic_action_logo_2)
+                .setContentTitle(message + " : " + jobId)
+                .setContentText(address)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);

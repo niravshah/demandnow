@@ -18,6 +18,7 @@
         android:layout_alignParentRight="true"
         android:src="@android:drawable/arrow_down_float"
         android:background="#ffffff"
-        android:layout_centerVertical="true" />
+        android:layout_centerVertical="true"
+        android:layout_margin="5dp" />
 
 </RelativeLayout>

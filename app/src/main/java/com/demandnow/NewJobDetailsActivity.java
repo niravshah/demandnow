@@ -79,7 +79,7 @@ public class NewJobDetailsActivity extends GDNBaseActivity implements OnMapReady
 
         });
 
-        //findViewById(R.id.address_search_btn).setOnClickListener(this);
+        findViewById(R.id.address_search_btn).setOnClickListener(this);
         findViewById(R.id.request_service).setOnClickListener(this);
 
         dynamicSpinner = (Spinner) findViewById(R.id.dynamic_spinner);
@@ -127,9 +127,9 @@ public class NewJobDetailsActivity extends GDNBaseActivity implements OnMapReady
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            /*case R.id.address_search_btn:
+            case R.id.address_search_btn:
                 getAddressFromAddress();
-                break;*/
+                break;
             case R.id.request_service:
                 requestService();
                 break;

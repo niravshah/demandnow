@@ -19,7 +19,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.demandnow.GDNApiHelper;
 import com.demandnow.GDNVolleySingleton;
 import com.demandnow.R;
-import com.demandnow.adapters.InProgressRecyclerAdapter;
+import com.demandnow.adapters.AllJobsRecyclerAdapter;
 import com.demandnow.model.JobInfo;
 
 import org.json.JSONArray;
@@ -75,23 +75,23 @@ public class AllJobsTabFragment extends Fragment {
 
     private void getCurrentJobQueueFromServer(final RecyclerView recyclerView) {
 
-        String url = GDNApiHelper.JOBS_URL + "/live";
+        String url = GDNApiHelper.JOBS_URL + "/all";
         JsonArrayRequest jsObjRequest = new JsonArrayRequest
                 (Request.Method.GET, url, new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
                         ArrayList<JobInfo> jobInfos = new ArrayList<>();
-                        for (int i = 0; i < response.length(); i++) {
+                        for(int i=0;i<response.length();i++){
                             try {
                                 JSONObject obj = (JSONObject) response.get(i);
-                                jobInfos.add(new JobInfo(obj.getString("jobId"), obj.getString("currentStatus")));
+                                jobInfos.add(new JobInfo(obj.getString("jobId"),obj.getString("currentStatus")));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
 
-                        recyclerView.setAdapter(new InProgressRecyclerAdapter(getContext(), jobInfos));
-                        if (swipeRefresh) {
+                        recyclerView.setAdapter(new AllJobsRecyclerAdapter(getContext(),jobInfos));
+                        if(swipeRefresh){
                             swipeContainer.setRefreshing(false);
                             Toast.makeText(getActivity(), "Swipe Refresh", Toast.LENGTH_LONG).show();
                         }

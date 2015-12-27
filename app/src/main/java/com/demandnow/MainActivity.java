@@ -10,9 +10,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -47,6 +49,7 @@ public class MainActivity extends GDNBaseActivity implements
     private static final int REQUEST_INVITE = 9000;
     private static final String TAG = "MainActivity";
     private static final int RESULT_OK = -1;
+    Button requestButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +62,11 @@ public class MainActivity extends GDNBaseActivity implements
         initializeBroadcastReciever();
         buildGoogleApiClient();
         findViewById(R.id.app_invite).setOnClickListener(this);
-        findViewById(R.id.request_service).setOnClickListener(this);
+
+        requestButton = (Button) findViewById(R.id.request_service);
+        requestButton.setOnClickListener(this);
+        requestButton.setEnabled(false);
+        requestButton.setTextColor(getResources().getColor(R.color.gray));
 
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.jobdetails_map);
         mapFragment.getMapAsync(this);
@@ -161,23 +168,37 @@ public class MainActivity extends GDNBaseActivity implements
                     public void onResponse(JSONObject response) {
                         Log.i("LOGIN", response.toString());
                         Iterator<String> keys = response.keys();
-                        while (keys.hasNext()) {
-                            try {
-                                String ninja = keys.next();
-                                JSONObject o = (JSONObject) response.get(ninja);
+                        if(response.length()>0) {
+                            while (keys.hasNext()) {
+                                try {
+                                    String ninja = keys.next();
+                                    JSONObject o = (JSONObject) response.get(ninja);
 
-                                GDNSharedPrefrences.getMap().addMarker(new MarkerOptions()
-                                        .position(new LatLng(Double.parseDouble((String) o.get("latitude")),
-                                                Double.parseDouble((String) o.get("longitude"))))
-                                        .title(ninja)
-                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_takeaway_icon)));
+                                    GDNSharedPrefrences.getMap().addMarker(new MarkerOptions()
+                                            .position(new LatLng(Double.parseDouble((String) o.get("latitude")),
+                                                    Double.parseDouble((String) o.get("longitude"))))
+                                            .title(ninja)
+                                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_takeaway_icon)));
+                                    requestButton.setEnabled(true);
+                                    requestButton.setTextColor(getResources().getColor(R.color.white));
 
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
                             }
+                        }else{
+
+                            requestButton.setEnabled(false);
+                            Snackbar.make(findViewById(R.id.coordinator), "Cant accpet new Jobs. No Amigos Nearby.", Snackbar.LENGTH_INDEFINITE).setAction("OK", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Toast.makeText(MainActivity.this, "Please check back in some time.", Toast.LENGTH_LONG).show();
+                                }
+                            }).show();
 
                         }
-                        //Toast.makeText(MainActivity.this, "Map Updated", Toast.LENGTH_LONG).show();
+
 
                     }
                 }, new Response.ErrorListener() {

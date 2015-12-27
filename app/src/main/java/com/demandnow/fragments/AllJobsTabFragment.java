@@ -33,7 +33,7 @@ import java.util.ArrayList;
  */
 public class AllJobsTabFragment extends Fragment {
     private static final String TAB_POSITION = "tab_position";
-    public static final String TAB_NAME = "All";
+    public static final String TAB_NAME = "Past";
     private SwipeRefreshLayout swipeContainer;
     private Boolean swipeRefresh = false;
 

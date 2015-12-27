@@ -10,32 +10,39 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 import com.demandnow.GDNApiHelper;
 import com.demandnow.GDNVolleySingleton;
 import com.demandnow.R;
 import com.demandnow.adapters.InProgressRecyclerAdapter;
+import com.demandnow.adapters.PendingJobsExpandableAdapter;
 import com.demandnow.model.JobInfo;
+import com.demandnow.model.ParentJobInfo;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Nirav on 20/11/2015.
  */
 public class InProgressJobsTabFragment extends Fragment {
     private static final String TAB_POSITION = "tab_position";
-    public static final String TAB_NAME = "In Progress";
+    public static final String TAB_NAME = "Current";
     private SwipeRefreshLayout swipeContainer;
     private Boolean swipeRefresh = false;
+    private RecyclerView pending_recyclerView;
+    private RecyclerView recyclerView;
 
     public InProgressJobsTabFragment() {
 
@@ -54,8 +61,13 @@ public class InProgressJobsTabFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View v =  inflater.inflate(R.layout.rv_inprogress_job_queue, container, false);
-        final RecyclerView recyclerView = (RecyclerView)v.findViewById(R.id.recyclerview);
+        recyclerView = (RecyclerView)v.findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+
+        pending_recyclerView = (RecyclerView)v.findViewById(R.id.recyclerview_pending);
+        pending_recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
 
         swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -63,13 +75,16 @@ public class InProgressJobsTabFragment extends Fragment {
             public void onRefresh() {
                 swipeRefresh = true;
                 getCurrentJobQueueFromServer(recyclerView);
+                getPendingCurrentJobQueueFromServer(pending_recyclerView);
             }
         });
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
+
         getCurrentJobQueueFromServer(recyclerView);
+        getPendingCurrentJobQueueFromServer(pending_recyclerView);
         return v;
     }
 
@@ -93,7 +108,7 @@ public class InProgressJobsTabFragment extends Fragment {
                         recyclerView.setAdapter(new InProgressRecyclerAdapter(getContext(),jobInfos));
                         if(swipeRefresh){
                             swipeContainer.setRefreshing(false);
-                            Toast.makeText(getActivity(), "Swipe Refresh", Toast.LENGTH_LONG).show();
+                            //Toast.makeText(getActivity(), "Swipe Refresh", Toast.LENGTH_LONG).show();
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -106,6 +121,63 @@ public class InProgressJobsTabFragment extends Fragment {
 
         GDNVolleySingleton.getInstance(getContext()).addToRequestQueue(jsObjRequest);
     }
+
+    private void getPendingCurrentJobQueueFromServer(final RecyclerView pending_recyclerView) {
+
+        String url = GDNApiHelper.JOBS_URL  + "/pending";
+        JsonArrayRequest jsObjRequest = new JsonArrayRequest
+                (Request.Method.GET, url, new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+
+                        Map<String, List> pInfos = new HashMap<>();
+
+                        for(int i=0;i<response.length();i++){
+                            try {
+                                JSONObject obj = (JSONObject) response.get(i);
+                                String ninja = obj.getString("servicedby");
+                                if(pInfos.containsKey(ninja)){
+                                    pInfos.get(ninja).add(new JobInfo(obj.getString("jobId"),obj.getString("currentStatus")));
+                                }else{
+                                    List<JobInfo> jInfos = new ArrayList();
+                                    jInfos.add(new JobInfo(obj.getString("jobId"),obj.getString("currentStatus")));
+                                    pInfos.put(ninja,jInfos);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        ArrayList<ParentObject> master = new ArrayList<>();
+                        for(String ninja : pInfos.keySet()){
+                            ParentJobInfo pinfo = new ParentJobInfo();
+                            pinfo.setTitle(ninja);
+                            pinfo.setChildObjectList(pInfos.get(ninja));
+                            master.add(pinfo);
+                        }
+
+                        PendingJobsExpandableAdapter mCrimeExpandableAdapter = new PendingJobsExpandableAdapter(getActivity(), master);
+                        mCrimeExpandableAdapter.setCustomParentAnimationViewId(R.id.parent_list_item_expand_arrow);
+                        mCrimeExpandableAdapter.setParentClickableViewAnimationDefaultDuration();
+                        mCrimeExpandableAdapter.setParentAndIconExpandOnClick(true);
+                        pending_recyclerView.setAdapter(mCrimeExpandableAdapter);
+                        if(swipeRefresh){
+                            swipeContainer.setRefreshing(false);
+                            //Toast.makeText(getActivity(), "Swipe Refresh", Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                        Log.e("VolleyErorr", "getAddressFromAddress - " + error.getLocalizedMessage() + error.getMessage());
+                    }
+                });
+
+        GDNVolleySingleton.getInstance(getContext()).addToRequestQueue(jsObjRequest);
+    }
+
 
 
 }

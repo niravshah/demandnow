@@ -55,7 +55,7 @@ public class MainActivity extends GDNBaseActivity implements
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        Toast.makeText(MainActivity.this, "Logged In: " + GDNSharedPrefrences.getAcctName(), Toast.LENGTH_LONG).show();
+        //Toast.makeText(MainActivity.this, "Logged In: " + GDNSharedPrefrences.getAcctName(), Toast.LENGTH_LONG).show();
         setContentView(R.layout.activity_main);
         renderToolbarActionbar();
         renderNavigationDrawer();

@@ -9,14 +9,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:text="Crime Date" />
+        android:text="Job Details" />
 
-    <CheckBox
+    <!--CheckBox
         android:id="@+id/child_list_item_crime_solved_check_box"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="8dp"
-        android:text="Solved" />
+        android:layout_marginRight="8dp"/-->
 
 </RelativeLayout>

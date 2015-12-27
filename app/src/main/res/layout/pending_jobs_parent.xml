@@ -7,18 +7,43 @@
         android:id="@+id/parent_list_item_crime_title_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:textStyle="bold"
-        android:text="Crime Title" />
+        android:padding="10dp"
+        android:text="Amigo"
+        android:layout_centerVertical="true" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_alignParentRight="true"
+        android:orientation="horizontal"
+        android:id="@+id/linearLayout">
+
 
     <ImageButton
         android:id="@+id/parent_list_item_expand_arrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toRightOf="@+id/parent_list_item_pay"
         android:src="@android:drawable/arrow_down_float"
         android:background="#ffffff"
         android:layout_centerVertical="true"
         android:layout_margin="5dp" />
+        </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PAY"
+        android:id="@+id/pay_button"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/linearLayout"
+        android:layout_toStartOf="@+id/linearLayout"
+        android:background="@color/accent"
+        android:minHeight="20dp"
+        android:minWidth="50dp"
+        android:textColor="@color/white"
+        android:textSize="12dp" />
 
 </RelativeLayout>

@@ -7,7 +7,6 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
-import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -21,6 +20,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.demandnow.activity.JobSummaryViewActivity;
 import com.demandnow.services.Constants;
 import com.demandnow.services.FetchAddressIntentService;
 import com.demandnow.services.FetchLocationIntentService;
@@ -190,7 +190,7 @@ public class NewJobDetailsActivity extends GDNBaseActivity implements OnMapReady
         intent.putExtra(Constants.SubmitNewJobService.DELIVERY_ADDRESS,deliveryAddress);
         startService(intent);
         Toast.makeText(this, "Job Submitted", Toast.LENGTH_LONG).show();
-        NavUtils.navigateUpFromSameTask(this);
+        startActivity(new Intent(this, JobSummaryViewActivity.class));
     }
 
     private void convertAddressToLocation() {

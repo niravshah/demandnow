@@ -115,7 +115,7 @@ public class InProgressJobsTabFragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
-                        Log.e("VolleyErorr", "getAddressFromAddress - " + error.getLocalizedMessage() + error.getMessage());
+                        Log.e("VolleyErorr", "getCurrentJobQueueFromServer - " + error.getLocalizedMessage() + error.getMessage());
                     }
                 });
 
@@ -171,7 +171,7 @@ public class InProgressJobsTabFragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
-                        Log.e("VolleyErorr", "getAddressFromAddress - " + error.getLocalizedMessage() + error.getMessage());
+                        Log.e("VolleyErorr", "getPendingCurrentJobQueueFromServer - " + error.getLocalizedMessage() + error.getMessage());
                     }
                 });
 

@@ -100,7 +100,7 @@ public class AllJobsTabFragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
-                        Log.e("VolleyErorr", "getAddressFromAddress - " + error.getLocalizedMessage() + error.getMessage());
+                        Log.e("AllJobsTabFragment", "getCurrentJobQueueFromServer - " + error.getLocalizedMessage() + error.getMessage());
                     }
                 });
 

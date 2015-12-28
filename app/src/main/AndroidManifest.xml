@@ -35,6 +35,14 @@
                 android:value=".MainActivity" />
         </activity>
         <activity
+            android:name=".activity.AddPaymentMethodActivity"
+            android:label="Add Payment Method"
+            android:parentActivityName=".NewJobDetailsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".NewJobDetailsActivity" />
+        </activity>
+        <activity
             android:name=".activity.ServiceSelectorActivity"
             android:label="Service Selector"
             android:parentActivityName=".MainActivity">

@@ -11,6 +11,9 @@ public class ParentJobInfo implements ParentObject {
 
     private List<Object> mChildrenList;
     private String title;
+    String sid;
+    String sname;
+    String sphoto;
 
     @Override
     public List<Object> getChildObjectList() {
@@ -28,5 +31,29 @@ public class ParentJobInfo implements ParentObject {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getSid() {
+        return sid;
+    }
+
+    public void setSid(String sid) {
+        this.sid = sid;
+    }
+
+    public String getSname() {
+        return sname;
+    }
+
+    public void setSname(String sname) {
+        this.sname = sname;
+    }
+
+    public String getSphoto() {
+        return sphoto;
+    }
+
+    public void setSphoto(String sphoto) {
+        this.sphoto = sphoto;
     }
 }

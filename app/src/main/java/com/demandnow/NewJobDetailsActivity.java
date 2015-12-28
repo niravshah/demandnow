@@ -20,6 +20,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.demandnow.activity.AddPaymentMethodActivity;
 import com.demandnow.activity.JobSummaryViewActivity;
 import com.demandnow.services.Constants;
 import com.demandnow.services.FetchAddressIntentService;
@@ -169,7 +170,7 @@ public class NewJobDetailsActivity extends GDNBaseActivity implements OnMapReady
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
-                        Log.e("VolleyErorr", "getAddressFromAddress - " + error.getLocalizedMessage() + error.getMessage());
+                        Log.e("NewJobDetailsActivity", "getAddressFromAddress - " + error.getLocalizedMessage() + error.getMessage());
                     }
                 });
 
@@ -178,19 +179,23 @@ public class NewJobDetailsActivity extends GDNBaseActivity implements OnMapReady
     }
 
     private void requestService() {
-        String serviceId = GDNSharedPrefrences.getServiceId();
-        Double pickupLong = GDNSharedPrefrences.getLastLocation().getLongitude();
-        Double pickupLat = GDNSharedPrefrences.getLastLocation().getLatitude();
-        Intent intent = new Intent(this, SubmitNewJobService.class);
-        intent.putExtra(Constants.SubmitNewJobService.DELIVERY_LATITUDE,deliveryLatitude.toString());
-        intent.putExtra(Constants.SubmitNewJobService.DELIVERY_LONGITUDE,deliveryLongitude.toString());
-        intent.putExtra(Constants.SubmitNewJobService.PICKUP_LATITUDE,pickupLat.toString());
-        intent.putExtra(Constants.SubmitNewJobService.PICKUP_LONGITUDE,pickupLong.toString());
-        intent.putExtra(Constants.SubmitNewJobService.SERVICE,serviceId);
-        intent.putExtra(Constants.SubmitNewJobService.DELIVERY_ADDRESS,deliveryAddress);
-        startService(intent);
-        Toast.makeText(this, "Job Submitted", Toast.LENGTH_LONG).show();
-        startActivity(new Intent(this, JobSummaryViewActivity.class));
+        if(GDNSharedPrefrences.getPaymentVerified()) {
+            String serviceId = GDNSharedPrefrences.getServiceId();
+            Double pickupLong = GDNSharedPrefrences.getLastLocation().getLongitude();
+            Double pickupLat = GDNSharedPrefrences.getLastLocation().getLatitude();
+            Intent intent = new Intent(this, SubmitNewJobService.class);
+            intent.putExtra(Constants.SubmitNewJobService.DELIVERY_LATITUDE, deliveryLatitude.toString());
+            intent.putExtra(Constants.SubmitNewJobService.DELIVERY_LONGITUDE, deliveryLongitude.toString());
+            intent.putExtra(Constants.SubmitNewJobService.PICKUP_LATITUDE, pickupLat.toString());
+            intent.putExtra(Constants.SubmitNewJobService.PICKUP_LONGITUDE, pickupLong.toString());
+            intent.putExtra(Constants.SubmitNewJobService.SERVICE, serviceId);
+            intent.putExtra(Constants.SubmitNewJobService.DELIVERY_ADDRESS, deliveryAddress);
+            startService(intent);
+            Toast.makeText(this, "Job Submitted", Toast.LENGTH_LONG).show();
+            startActivity(new Intent(this, JobSummaryViewActivity.class));
+        }else{
+            startActivity(new Intent(this,AddPaymentMethodActivity.class));
+        }
     }
 
     private void convertAddressToLocation() {

@@ -3,47 +3,74 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/parent_list_item_crime_title_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="Amigo"
-        android:layout_centerVertical="true" />
-
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/linearLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/profile" />
+
+        <TextView
+            android:id="@+id/parent_list_item_crime_title_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/imageView2"
+            android:padding="10dp"
+            android:text="Amigo" />
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/parent_list_item_total_amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:layout_alignParentRight="true"
-        android:orientation="horizontal"
-        android:id="@+id/linearLayout">
-
-
-    <ImageButton
-        android:id="@+id/parent_list_item_expand_arrow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_toRightOf="@+id/parent_list_item_pay"
-        android:src="@android:drawable/arrow_down_float"
-        android:background="#ffffff"
-        android:layout_centerVertical="true"
-        android:layout_margin="5dp" />
-        </LinearLayout>
+        android:text="Total"
+        android:layout_toLeftOf="@+id/pay_button"
+        android:textColor="@color/accent"
+        android:layout_centerVertical="true"/>
 
     <Button
+        android:id="@+id/pay_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="PAY"
-        android:id="@+id/pay_button"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/linearLayout"
-        android:layout_toStartOf="@+id/linearLayout"
         android:background="@color/accent"
         android:minHeight="20dp"
         android:minWidth="50dp"
+        android:text="PAY"
         android:textColor="@color/white"
         android:textSize="12dp" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ImageButton
+            android:id="@+id/parent_list_item_expand_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            android:layout_toRightOf="@+id/parent_list_item_pay"
+            android:background="#ffffff"
+            android:src="@android:drawable/arrow_down_float" />
+    </LinearLayout>
+
 
 </RelativeLayout>

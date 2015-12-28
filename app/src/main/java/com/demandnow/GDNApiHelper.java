@@ -15,5 +15,6 @@ public class GDNApiHelper {
     public static final String JOBS_URL = BASE_URL + "/jobs/" + GDNSharedPrefrences.getAcctId();
     public static final String JOB_URL = BASE_URL + "/job/" + GDNSharedPrefrences.getAcctId() + "/";
     public static final String NEW_REQUEST_URL = BASE_URL + "/job/";
+    public static final String ADD_PAYMENT_METHOD_URL = BASE_URL + "/stripe/" + GDNSharedPrefrences.getAcctId() + "/token";
 
 }

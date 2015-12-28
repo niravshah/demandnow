@@ -45,7 +45,6 @@ import org.json.JSONObject;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
 
 
-
     private String TAG = "LoginActivity";
 
     private static final String KEY_IS_RESOLVING = "is_resolving";
@@ -82,7 +81,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             mCredentialToSave = savedInstanceState.getParcelable(KEY_CREDENTIAL_TO_SAVE);
         }
 
-        if(checkPlayServices()) {
+        if (checkPlayServices()) {
             buildGoogleApiClient(null);
         }
 
@@ -329,20 +328,35 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         public void onResponse(JSONObject response) {
                             Boolean active = false;
                             Boolean newUser = false;
+                            Boolean payment_verified = false;
+                            Boolean phone_verified = false;
                             String defaultService = "s1";
                             String defaultServiceName = "Takeaway Delivery";
+                            String token = null;
+                            JSONObject user;
                             try {
-                                active = (Boolean) response.get("active");
-                                newUser = (Boolean) response.get("new");
-                                defaultService = (String) response.get("defaultService");
-                                defaultServiceName = (String) response.get("defaultServiceName");
+                                user = response.getJSONObject("user");
+                                token = response.getString("token");
+
+                                active = (Boolean) user.get("active");
+                                newUser = (Boolean) user.get("new");
+                                defaultService = (String) user.get("defaultService");
+                                defaultServiceName = (String) user.get("defaultServiceName");
+                                payment_verified = (Boolean) user.get("payment_verified");
+                                phone_verified = (Boolean) user.get("phone_verified");
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
 
+                            GDNSharedPrefrences.setPaymentVerified(payment_verified);
+                            GDNSharedPrefrences.setPhoneVerified(phone_verified);
+                            GDNSharedPrefrences.setServiceId(defaultService);
+                            GDNSharedPrefrences.setCurrentService(defaultServiceName);
+                            GDNSharedPrefrences.setToken(token);
+
                             if (active) {
-                                GDNSharedPrefrences.setServiceId(defaultService);
-                                GDNSharedPrefrences.setCurrentService(defaultServiceName);
+
                                 if (ContextCompat.checkSelfPermission(LoginActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                                         != PackageManager.PERMISSION_GRANTED) {
                                     ActivityCompat.requestPermissions(LoginActivity.this,
@@ -352,7 +366,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
                                 }
-                            }else if(newUser){
+                            } else if (newUser) {
 
                                 startActivity(new Intent(getApplicationContext(), NewUserRegistrationActivity.class));
                             }
@@ -362,7 +376,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             error.printStackTrace();
-                            Log.e("VolleyErorr", error.getLocalizedMessage() + error.getMessage());
+                            Log.e("LoginActivity", error.getLocalizedMessage() + error.getMessage());
                         }
                     });
 

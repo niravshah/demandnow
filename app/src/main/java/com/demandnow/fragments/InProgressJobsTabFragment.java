@@ -44,6 +44,7 @@ public class InProgressJobsTabFragment extends Fragment {
     private RecyclerView pending_recyclerView;
     private RecyclerView recyclerView;
 
+
     public InProgressJobsTabFragment() {
 
     }
@@ -115,7 +116,7 @@ public class InProgressJobsTabFragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
-                        Log.e("VolleyErorr", "getCurrentJobQueueFromServer - " + error.getLocalizedMessage() + error.getMessage());
+                        Log.e("InProgressFragment", "getCurrentJobQueueFromServer - " + error.getLocalizedMessage() + error.getMessage());
                     }
                 });
 
@@ -136,11 +137,23 @@ public class InProgressJobsTabFragment extends Fragment {
                             try {
                                 JSONObject obj = (JSONObject) response.get(i);
                                 String ninja = obj.getString("servicedby");
+                                String sid = obj.getString("sid");
+                                String sphoto = obj.getString("sphoto");
+                                String address = obj.getString("address");
+                                String created = obj.getString("date");
+
+                                JobInfo info = new JobInfo(obj.getString("jobId"),obj.getString("currentStatus"));
+                                info.setSname(ninja);
+                                info.setSid(sid);
+                                info.setSphoto(sphoto);
+                                info.setAddress(address);
+                                info.setCreated(created);
+
                                 if(pInfos.containsKey(ninja)){
-                                    pInfos.get(ninja).add(new JobInfo(obj.getString("jobId"),obj.getString("currentStatus")));
+                                    pInfos.get(ninja).add(info);
                                 }else{
                                     List<JobInfo> jInfos = new ArrayList();
-                                    jInfos.add(new JobInfo(obj.getString("jobId"),obj.getString("currentStatus")));
+                                    jInfos.add(info);
                                     pInfos.put(ninja,jInfos);
                                 }
                             } catch (JSONException e) {
@@ -153,6 +166,10 @@ public class InProgressJobsTabFragment extends Fragment {
                             ParentJobInfo pinfo = new ParentJobInfo();
                             pinfo.setTitle(ninja);
                             pinfo.setChildObjectList(pInfos.get(ninja));
+                            JobInfo zero = (JobInfo) pInfos.get(ninja).get(0);
+                            pinfo.setSphoto(zero.getSphoto());
+                            pinfo.setSname(zero.getSname());
+                            pinfo.setSid(zero.getSid());
                             master.add(pinfo);
                         }
 

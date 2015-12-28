@@ -21,6 +21,10 @@ public class GDNSharedPrefrences {
     private static String currentService;
     private static String acctId;
     private static String serviceId;
+    private static Boolean paymentVerified;
+    private static Boolean phoneVerified;
+    private static String token;
+
 
     public static String getAcctEmail() {
         return acctEmail;
@@ -96,5 +100,29 @@ public class GDNSharedPrefrences {
 
     public static void setServiceId(String serviceId) {
         GDNSharedPrefrences.serviceId = serviceId;
+    }
+
+    public static Boolean getPaymentVerified() {
+        return paymentVerified;
+    }
+
+    public static void setPaymentVerified(Boolean paymentVerified) {
+        GDNSharedPrefrences.paymentVerified = paymentVerified;
+    }
+
+    public static Boolean getPhoneVerified() {
+        return phoneVerified;
+    }
+
+    public static void setPhoneVerified(Boolean phoneVerified) {
+        GDNSharedPrefrences.phoneVerified = phoneVerified;
+    }
+
+    public static String getToken() {
+        return token;
+    }
+
+    public static void setToken(String token) {
+        GDNSharedPrefrences.token = token;
     }
 }

@@ -19,6 +19,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.crashlytics.android.Crashlytics;
 import com.demandnow.activity.onboard.NewUserRegistrationActivity;
 import com.demandnow.services.RegistrationIntentService;
 import com.google.android.gms.auth.api.Auth;
@@ -310,6 +311,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             String accountId = acct.getId();
             Uri personPhoto = acct.getPhotoUrl();
             String idToken = acct.getIdToken();
+
+
+            Crashlytics.setUserIdentifier(accountId);
+            Crashlytics.setUserEmail(personEmail);
+            Crashlytics.setUserName(personName);
+
 
             JSONObject data = new JSONObject();
             try {

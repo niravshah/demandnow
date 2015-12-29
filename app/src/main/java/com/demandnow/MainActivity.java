@@ -71,6 +71,7 @@ public class MainActivity extends GDNBaseActivity implements
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.jobdetails_map);
         mapFragment.getMapAsync(this);
 
+
     }
 
     private void initializeBroadcastReciever() {

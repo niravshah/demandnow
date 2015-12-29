@@ -22,7 +22,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:name=".GDNApplication">
 
 
 
@@ -143,6 +144,9 @@
             android:name=".services.PostcodesIntentService"
             android:exported="false"/>
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="1534546491dfda8fe78c604141e1b3d7a55b6e49" />
     </application>
 
 </manifest>

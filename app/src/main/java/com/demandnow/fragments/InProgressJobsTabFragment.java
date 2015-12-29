@@ -132,13 +132,14 @@ public class InProgressJobsTabFragment extends Fragment {
                     public void onResponse(JSONArray response) {
 
                         Map<String, List> pInfos = new HashMap<>();
-
+                        String sphoto = "";
                         for(int i=0;i<response.length();i++){
                             try {
                                 JSONObject obj = (JSONObject) response.get(i);
                                 String ninja = obj.getString("servicedby");
                                 String sid = obj.getString("sid");
-                                String sphoto = obj.getString("sphoto");
+                                if(obj.has("sphoto"))
+                                sphoto = obj.getString("sphoto");
                                 String address = obj.getString("address");
                                 String created = obj.getString("date");
 

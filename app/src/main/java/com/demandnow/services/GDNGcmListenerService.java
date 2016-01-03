@@ -14,6 +14,8 @@ import com.demandnow.MainActivity;
 import com.demandnow.R;
 import com.google.android.gms.gcm.GcmListenerService;
 
+import java.util.Random;
+
 /**
  * Created by Nirav on 29/11/2015.
  */
@@ -31,50 +33,50 @@ public class GDNGcmListenerService extends GcmListenerService {
      * @param data Data bundle containing message data as key/value pairs.
      *             For Set of keys use data.keySet().
      */
-    // [START receive_message]
     @Override
     public void onMessageReceived(String from, Bundle data) {
+        String type = data.getString("type");
         String message = data.getString("gcm.notification.message");
+        String details = data.getString("details");
 
-        String jobDetails = data.getString("details");
-        String[] parts = jobDetails.split(":");
+        switch (type){
+            case "PAYMENT":
+                processPaymentNotification(details, message);
+                break;
+            case "JOB":
+                processJobNotification(details,message);
+                break;
+            default:
+                break;
 
-        requesterId = parts[0];
-        jobId = parts[1];
-        address = parts[6];
+        }
 
         Log.d(TAG, "From: " + from);
         Log.d(TAG, "Message: " + message);
 
-        if (from.startsWith("/topics/")) {
-            // message received from some topic.
-        } else {
-            // normal downstream message.
-        }
 
-        // [START_EXCLUDE]
-        /**
-         * Production applications would usually process the message here.
-         * Eg: - Syncing with server.
-         *     - Store message in local database.
-         *     - Update UI.
-         */
-
-        /**
-         * In some cases it may be useful to show a notification indicating to the user
-         * that a message was received.
-         */
-        sendNotification(message);
-        // [END_EXCLUDE]
     }
-    // [END receive_message]
+
+    private void processJobNotification(String details, String message) {
+        String[] parts = details.split(":");
+        requesterId = parts[0];
+        jobId = parts[1];
+        address = parts[6];
+        message = message + "-" + jobId;
+        sendNotification(message, address);
+
+    }
+
+    private void processPaymentNotification(String details, String message) {
+        sendNotification(message,details);
+    }
 
     /**
      * Create and show a simple notification containing the received GCM message.
      *
      * @param message GCM message received.
      */
-    private void sendNotification(String message) {
+    private void sendNotification(String message, String subMessage) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
@@ -83,8 +85,8 @@ public class GDNGcmListenerService extends GcmListenerService {
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_action_logo_2)
-                .setContentTitle(message + " : " + jobId)
-                .setContentText(address)
+                .setContentTitle(message)
+                .setContentText(subMessage)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);
@@ -92,6 +94,6 @@ public class GDNGcmListenerService extends GcmListenerService {
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        notificationManager.notify(new Random().nextInt(), notificationBuilder.build());
     }
 }

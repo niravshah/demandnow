@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -123,7 +124,7 @@ public class PendingJobsExpandableAdapter extends ExpandableRecyclerAdapter<Pend
                     }
                     Log.i(TAG, url);
                     showProgress();
-                    postCharge(url, jobIds, pInfo.getSname(),pInfo.getSphoto());
+                    postCharge(url, jobIds, pInfo.getSname(),pInfo.getSphoto(),pInfo.getSid());
                 }
             });
         }
@@ -141,7 +142,7 @@ public class PendingJobsExpandableAdapter extends ExpandableRecyclerAdapter<Pend
         }
     }
 
-    private void postCharge(String url, List<String> jobIds, final String sname, final String sphoto) {
+    private void postCharge(String url, List<String> jobIds,  final String sname, final String sphoto, final String sid) {
 
         JSONArray arr = new JSONArray(jobIds);
         JSONObject data = new JSONObject();
@@ -157,7 +158,7 @@ public class PendingJobsExpandableAdapter extends ExpandableRecyclerAdapter<Pend
                     @Override
                     public void onResponse(JSONObject response) {
                         hideProgress();
-                        showRatingsModal(sname, sphoto);
+                        showRatingsModal(sname, sphoto, sid);
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -170,7 +171,7 @@ public class PendingJobsExpandableAdapter extends ExpandableRecyclerAdapter<Pend
         GDNVolleySingleton.getInstance(ctx).addToRequestQueue(jsObjRequest);
     }
 
-    private void showRatingsModal(String sname, String sphoto) {
+    private void showRatingsModal(String sname, String sphoto, final String sid) {
         final Dialog rankDialog = new Dialog(ctx, R.style.FullHeightDialog);
         rankDialog.setContentView(R.layout.dialog_ratings);
         rankDialog.setCancelable(true);
@@ -183,15 +184,39 @@ public class PendingJobsExpandableAdapter extends ExpandableRecyclerAdapter<Pend
         TextView text = (TextView) rankDialog.findViewById(R.id.rank_dialog_text1);
         text.setText(sname);
 
+        final RatingBar rBar = (RatingBar) rankDialog.findViewById(R.id.dialog_ratingbar);
+
         Button updateButton = (Button) rankDialog.findViewById(R.id.rank_dialog_button);
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sendRatingsToServer(sid, rBar.getRating());
                 rankDialog.dismiss();
             }
         });
         //now that the dialog is set up, it's time to show it
         rankDialog.show();
+    }
+
+    private void sendRatingsToServer(String sid, float rating) {
+        String url = GDNApiHelper.NEW_RATING + rating + "/" + sid ;
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.POST, url, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                    }
+                }, new Response.ErrorListener() {
+
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                        Log.e("PendingJobsAdapter", "postCharge - " + error.getLocalizedMessage() + error.getMessage());
+                    }
+                });
+
+        GDNVolleySingleton.getInstance(ctx).addToRequestQueue(jsObjRequest);
     }
 
     private void showProgress() {

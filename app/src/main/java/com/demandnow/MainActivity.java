@@ -188,13 +188,15 @@ public class MainActivity extends GDNBaseActivity implements
                                 }
 
                             }
+                            Toast.makeText(MainActivity.this, response.length() + " drivers nearby! Request Service now.", Toast.LENGTH_LONG).show();
+
                         }else{
 
                             requestButton.setEnabled(false);
-                            Snackbar.make(findViewById(R.id.coordinator), "Cant accpet new Jobs. No Amigos Nearby.", Snackbar.LENGTH_INDEFINITE).setAction("OK", new View.OnClickListener() {
+                            Snackbar.make(findViewById(R.id.coordinator), "Cant accpet new jobs. No drivers nearby.", Snackbar.LENGTH_INDEFINITE).setAction("OK", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    Toast.makeText(MainActivity.this, "Please check back in some time.", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(MainActivity.this, "Please check back in some time.", Toast.LENGTH_SHORT).show();
                                 }
                             }).show();
 

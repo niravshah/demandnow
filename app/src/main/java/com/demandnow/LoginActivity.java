@@ -207,6 +207,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (isSignedIn) {
             GoogleSignInAccount gsa = gsr.getSignInAccount();
             GDNSharedPrefrences.setAcctName(gsa.getDisplayName());
+            if(gsa.getPhotoUrl()!=null)
             GDNSharedPrefrences.setPhotUrl(gsa.getPhotoUrl().toString());
             GDNSharedPrefrences.setAcctEmail(gsa.getEmail());
             GDNSharedPrefrences.setAcctId(gsa.getId());
@@ -339,7 +340,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             Boolean payment_verified = false;
                             Boolean phone_verified = false;
                             String defaultService = "s1";
-                            String defaultServiceName = "Takeaway Delivery";
+                            String defaultServiceName = "Food Delivery";
                             String token = null;
                             JSONObject user;
                             try {

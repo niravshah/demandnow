@@ -8,6 +8,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.demandnow.MainActivity;
@@ -62,13 +63,12 @@ public class GDNGcmListenerService extends GcmListenerService {
         requesterId = parts[0];
         jobId = parts[1];
         address = parts[6];
-        message = message + "-" + jobId;
         sendNotification(message, address);
 
     }
 
     private void processPaymentNotification(String details, String message) {
-        sendNotification(message,details);
+        sendNotification(details,message);
     }
 
     /**
@@ -84,7 +84,8 @@ public class GDNGcmListenerService extends GcmListenerService {
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_action_logo_2)
+                .setColor(ContextCompat.getColor(this, R.color.primary_dark))
+                .setSmallIcon(R.drawable.ic_stat_dn_notification)
                 .setContentTitle(message)
                 .setContentText(subMessage)
                 .setAutoCancel(true)

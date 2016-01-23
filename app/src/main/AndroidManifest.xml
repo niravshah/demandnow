@@ -41,7 +41,7 @@
         </activity>
         <activity
             android:name=".activity.AddPaymentMethodActivity"
-            android:label="Add Payment Method"
+            android:label="Add Payment Details"
             android:parentActivityName=".NewJobDetailsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

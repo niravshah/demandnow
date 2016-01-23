@@ -21,6 +21,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.demandnow.activity.AddPaymentMethodActivity;
 import com.google.android.gms.appinvite.AppInviteInvitation;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -66,7 +67,6 @@ public class MainActivity extends GDNBaseActivity implements
         requestButton = (Button) findViewById(R.id.request_service);
         requestButton.setOnClickListener(this);
         requestButton.setEnabled(false);
-        requestButton.setTextColor(getResources().getColor(R.color.gray));
 
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.jobdetails_map);
         mapFragment.getMapAsync(this);
@@ -181,14 +181,13 @@ public class MainActivity extends GDNBaseActivity implements
                                             .title(ninja)
                                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_takeaway_icon)));
                                     requestButton.setEnabled(true);
-                                    requestButton.setTextColor(getResources().getColor(R.color.white));
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
 
                             }
-                            Toast.makeText(MainActivity.this, response.length() + " drivers nearby! Request Service now.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this, response.length() + " driver nearby.", Toast.LENGTH_LONG).show();
 
                         }else{
 
@@ -266,7 +265,12 @@ public class MainActivity extends GDNBaseActivity implements
         }
     }
     private void startNewJobDetailsActivity() {
-        startActivity(new Intent(this, NewJobDetailsActivity.class));
+
+        if(GDNSharedPrefrences.getPaymentVerified()) {
+            startActivity(new Intent(this, NewJobDetailsActivity.class));
+        }else{
+            startActivity(new Intent(this,AddPaymentMethodActivity.class));
+        }
     }
 
     @Override

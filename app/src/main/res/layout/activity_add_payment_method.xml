@@ -23,15 +23,53 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginTop="120dp">
+            android:layout_marginTop="40dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Before You Request Service"
+                android:textColor="@color/accent"
+                android:id="@+id/phone_verification_title"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp" />
+
+            <TextView
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="We need to save your payment details. No charges will be applied yet."
+                android:id="@+id/add_payment_subtitle"
+                android:layout_below="@+id/phone_verification_title"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="60dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Enter Payment Card Details"
+                android:id="@+id/enter_payment_card_details"
+                android:layout_below="@+id/add_payment_subtitle"
+                android:textAlignment="center"
+                android:textSize="14dp"
+                android:textColor="@color/white"
+                android:layout_centerHorizontal="true" />
 
             <com.devmarvel.creditcardentry.library.CreditCardForm
                 android:id="@+id/credit_card_form"
+                android:layout_below="@+id/enter_payment_card_details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:helper_text_color="@color/accent"
                 app:card_number_hint="Enter Card Number"
                 android:layout_gravity="center_vertical"
+                android:layout_marginTop="20dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 app:include_zip="false"/>
@@ -41,10 +79,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="Add Payment Method"
+                android:text="Save Card"
                 android:gravity="center_vertical|center_horizontal"
-                android:layout_marginBottom="40dp"
-                android:layout_marginTop="60dp"
+                android:layout_marginTop="20dp"
                 android:layout_below="@+id/credit_card_form"
                 android:layout_centerHorizontal="true"
                 android:background="@color/accent"
@@ -53,14 +90,51 @@
                 android:textColor="@color/white" />
 
             <TextView
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="We will charge you only when service is complete and you're happy to pay."
+                android:id="@+id/add_payment_subtitle_2"
+                android:layout_below="@+id/validation_messages"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Card Validation Messagaes"
                 android:id="@+id/validation_messages"
                 android:layout_below="@+id/add_payment_method"
-                android:layout_alignEnd="@+id/add_payment_method"
+                android:textAlignment="center"
+                android:textSize="14dp"
                 android:layout_centerHorizontal="true" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView3"
+                android:src="@drawable/powered_by_stripe"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="80dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="We use Stripe Payments to offer maximum protection to your Bank Details"
+                android:id="@+id/stripe_message"
+                android:layout_marginTop="10dp"
+                android:layout_alignEnd="@+id/credit_card_form"
+                android:layout_alignStart="@+id/credit_card_form"
+                android:textAlignment="center"
+                android:textSize="12dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="20dp" />
 
         </RelativeLayout>
 

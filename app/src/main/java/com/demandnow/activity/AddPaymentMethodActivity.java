@@ -1,8 +1,8 @@
 package com.demandnow.activity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +17,7 @@ import com.demandnow.GDNApiHelper;
 import com.demandnow.GDNBaseActivity;
 import com.demandnow.GDNSharedPrefrences;
 import com.demandnow.GDNVolleySingleton;
+import com.demandnow.NewJobDetailsActivity;
 import com.demandnow.R;
 import com.devmarvel.creditcardentry.library.CreditCardForm;
 import com.stripe.android.Stripe;
@@ -116,7 +117,8 @@ public class AddPaymentMethodActivity extends GDNBaseActivity implements View.On
                         hideProgress();
                         Toast.makeText(getApplicationContext(),"Payment Method Validated. Thanks.",Toast.LENGTH_LONG).show();
                         GDNSharedPrefrences.setPaymentVerified(true);
-                        NavUtils.navigateUpFromSameTask(AddPaymentMethodActivity.this);
+                        startActivity(new Intent(AddPaymentMethodActivity.this, NewJobDetailsActivity.class));
+
                     }
                 }, new Response.ErrorListener() {
                     @Override

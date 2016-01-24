@@ -36,7 +36,22 @@ public class InProgressRecyclerAdapter extends RecyclerView.Adapter<InProgressRe
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         JobInfo item = mItems.get(i);
         viewHolder.mJobItem.setText(item.getJobId());
-        viewHolder.mJobItemstatus.setText(item.getJobStatus());
+        viewHolder.mJobItemstatus.setText(getJobStatus(item));
+    }
+
+    private String getJobStatus(JobInfo item) {
+
+        switch(item.getJobStatus()) {
+            case "in_progress":
+                return "IN PROGRESS";
+            case "looking_for_drivers":
+                return "SEARCHING DRIVERS";
+            case "new":
+                return "NEW";
+            default:
+                return item.getJobStatus();
+        }
+
     }
 
     @Override

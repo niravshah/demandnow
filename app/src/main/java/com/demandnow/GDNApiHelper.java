@@ -19,4 +19,5 @@ public class GDNApiHelper {
     public static final String PAYMENT_URL = BASE_URL + "/stripe/charge/" + GDNSharedPrefrences.getAcctId() + "/";
 
     public static final String NEW_RATING = BASE_URL + "/ratings/" + GDNSharedPrefrences.getAcctId() + "/";
+    public static final String UPDATE_IMAGE_URL = BASE_URL + "/" + GDNSharedPrefrences.getAcctId() + "/update/image";
 }

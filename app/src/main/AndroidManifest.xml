@@ -151,6 +151,10 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="1534546491dfda8fe78c604141e1b3d7a55b6e49" />
+
+        <meta-data
+            android:name="CLOUDINARY_URL"
+            android:value="cloudinary://574627967974557:jcnCciwxXt4Djh3qVdIV9JSui6A@specky" />
     </application>
 
 </manifest>

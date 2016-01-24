@@ -107,17 +107,19 @@ public class NewUserRegistrationActivity extends AppCompatActivity implements Vi
             data.put("aId", GDNSharedPrefrences.getAcctId());
             //data.put("password", eText.getText().toString());
             data.put("password", "temppassword");
-            if(GDNSharedPrefrences.getAcctName() == null){
+
                 if(eDisplayName.getText() != null){
                     data.put("personName", eDisplayName.getText().toString());
                     GDNSharedPrefrences.setAcctName(eDisplayName.getText().toString());
                 }else{
-                    data.put("personName", GDNSharedPrefrences.getAcctEmail());
-                    GDNSharedPrefrences.setAcctName(GDNSharedPrefrences.getAcctEmail());
+                    if(GDNSharedPrefrences.getAcctName() == null){
+                        data.put("personName", GDNSharedPrefrences.getAcctEmail());
+                        GDNSharedPrefrences.setAcctName(GDNSharedPrefrences.getAcctEmail());
+                    }else{
+                        data.put("personName", GDNSharedPrefrences.getAcctName());
+                    }
                 }
-            }else{
-                data.put("personName", GDNSharedPrefrences.getAcctName());
-            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
